@@ -8,7 +8,9 @@ import {
 
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Regiter from './pages/Register';
+import Pricing from './pages/Pricing';
+import SignUp from './pages/SignUp';
+// import Footer from './pages/Footer';
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
       <link to="/"></link>
       <link to="/login"></link>
       <link to="/register"></link>
+      <link to="/pricing"></link>
         {/* <ul>
           <li>
             <Link to="/"></Link>
@@ -34,13 +37,22 @@ function App() {
       <Routes>
         <Route path="/" element={ <Home/> } />
         <Route path="/login" element={ <Login/> } />
-        <Route path="/register" element={ <Regiter/> }/>
-
+        <Route path="/signup" element={ <SignUp/> }/>
+        <Route path="/pricing" element={ <Pricing/> }/>
+        <Route path="/*" element={ <PageNotFound/> } />
         {/* <Route path="/price" element={ <Price/> } /> */}
       </Routes>
+      {/* <Footer/> */}
     </div>
   );
 }
 
+function PageNotFound() {
+  return (
+    <div>
+      <h2>404 Page not found</h2>
+    </div>
+  );
+}
 
 export default App;
