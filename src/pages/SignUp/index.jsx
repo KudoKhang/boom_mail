@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { URL } from '../../config/constants';
 
 export default function SignUp() {
   const handleSubmit = (event) => {
@@ -84,12 +85,12 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link href={URL.LOGIN} variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

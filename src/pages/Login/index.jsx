@@ -4,8 +4,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import loginImg from '../../imgs/login.png';
 import { Img } from '../../styles';
+import { URL } from '../../config/constants';
 
 export default function Login() {
   const handleSubmit = (event) => {
@@ -33,9 +35,16 @@ export default function Login() {
               <TextField id="input-password" label="Mật khẩu" type="password" required fullWidth />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" sx={{ mt: 2 }} fullWidth>
+          <Button type="submit" variant="contained" sx={{ my: 3 }} fullWidth>
             Đăng nhập
           </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href={URL.SIGNUP} variant="body2">
+                Bạn chưa có tài khoản? Đăng kí
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </Container>

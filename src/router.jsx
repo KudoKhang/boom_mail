@@ -6,6 +6,7 @@ const SignUp = lazy(() => import('./pages/SignUp'));
 const Login = lazy(() => import('./pages/Login'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const PageError = lazy(() => import('./pages/PageError'));
+const Home = lazy(() => import('./pages/Home'));
 
 export const router = createBrowserRouter([
   {
@@ -14,17 +15,23 @@ export const router = createBrowserRouter([
     errorElement: <PageError />,
     children: [
       {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'signup',
-        element: <SignUp />,
+        path: 'dashboard',
+        element: <Home />,
       },
       {
         path: 'pricing',
         element: <Pricing />,
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
+    errorElement: <PageError />,
+  },
+  {
+    path: '/signup',
+    element: <SignUp />,
+    errorElement: <PageError />,
   },
 ]);
