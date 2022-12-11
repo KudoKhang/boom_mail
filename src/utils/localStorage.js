@@ -32,4 +32,11 @@ export const localCache = {
   setUserToken(val) {
     this.set('user_access_token', val);
   },
+  setUser(val) {
+    this.set('user', val);
+  },
+  clearUser() {
+    this.remove('user_access_token');
+    this.remove('user');
+  },
 };

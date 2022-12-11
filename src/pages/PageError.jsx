@@ -8,7 +8,7 @@ export default function PageError() {
 
   return (
     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-      <Box gridColumn="5 / 8">
+      <Box gridColumn="4 / 9">
         <h1>Oops!</h1>
         <p>Sorry, an unexpected error has occurred.</p>
         <p>

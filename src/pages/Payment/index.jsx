@@ -5,16 +5,39 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 // import { useNavigate } from 'react-router-dom';
+import { useFormData } from '../../hooks/useFormData';
+// import { toExternalPayment } from '../../api';
 
-// const PAYMENT_URL = 'https://perfectmoney.com/api/step1.asp';
+const TARGET_URL = 'https://perfectmoney.com/api/step1.asp';
+const PAYMENT_OPTIONS = {
+  PAYEE_ACCOUNT: 'U14526665',
+  PAYMENT_NAME: 'boomcheck.io',
+  PAYMENT_ID: 'BOOMCHECK',
+  PAYMENT_UNITS: 'USD',
+  STATUS_URL: 'https://boomcheck.io/handlers/paymentHandler.php?for=k',
+  PAYMENT_URL: 'https://boomcheck.io/handlers/paymentHandler.php?for=k',
+  PAYMENT_URL_METHOD: 'POST',
+  NOPAYMENT_URL: 'http://0.0.0.0:8000/payment',
+  NOPAYMENT_URL_METHOD: 'GET',
+  SUGGESTED_MEMO: '',
+  BAGGAGE_FIELDS: '',
+};
 
 export default function Payment() {
-  // const navigate = useNavigate();
+  const { formData, onInputChange } = useFormData();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log(22, e.formData);
+    const params = { ...PAYMENT_OPTIONS, ...formData };
+    const urlParams = new URLSearchParams(Object.entries(params));
+    const fullUrl = `${TARGET_URL}?${urlParams.toString()}`;
+
+    // const res = await toExternalPayment(fullUrl);
+    // window.location.replace(fullUrl);
+    window.location = TARGET_URL;
+    const form = React.createElement('form', { action: TARGET_URL, method: 'POST', body: params });
+    form.submit();
   };
 
   return (
@@ -29,26 +52,6 @@ export default function Payment() {
             }}
           >
             <Box component="form" onSubmit={handleSubmit}>
-              <input type="hidden" name="PAYEE_ACCOUNT" value="U14526665" />
-              <input type="hidden" name="PAYEE_NAME" value="boomcheck.io" />
-              <input type="hidden" name="PAYMENT_ID" value="BOOMCHECK" />
-              {/* <input type="hidden" name="PAYMENT_AMOUNT" value="0.1" id="deposit-amount" /> */}
-              <input type="hidden" name="PAYMENT_UNITS" value="USD" />
-              <input
-                type="hidden"
-                name="STATUS_URL"
-                value="https://boomcheck.io/handlers/paymentHandler.php?for=k"
-              />
-              <input
-                type="hidden"
-                name="PAYMENT_URL"
-                value="https://boomcheck.io/handlers/paymentHandler.php?for=k"
-              />
-              <input type="hidden" name="PAYMENT_URL_METHOD" value="POST" />
-              <input type="hidden" name="NOPAYMENT_URL" value="http://0.0.0.0:8000/payment" />
-              <input type="hidden" name="NOPAYMENT_URL_METHOD" value="GET" />
-              <input type="hidden" name="SUGGESTED_MEMO" value="" />
-              <input type="hidden" name="BAGGAGE_FIELDS" value="" />
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -58,6 +61,7 @@ export default function Payment() {
                     label="Số tiền cần nạp"
                     required
                     fullWidth
+                    onChange={onInputChange}
                   />
                 </Grid>
               </Grid>

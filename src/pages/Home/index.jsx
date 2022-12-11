@@ -5,12 +5,12 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useFormData } from '../../hooks/useFormData';
-import { addMailsApi } from '../api';
+import { addMailsApi } from '../../api';
 import { localCache } from '../../utils/localStorage';
 import { useAlert } from '../../contexts/alert';
 
 export default function Home() {
-  const { formData, onChange } = useFormData();
+  const { formData, onInputChange } = useFormData();
   const { showError } = useAlert();
 
   const transformEmails = (emails) => {
@@ -51,7 +51,7 @@ export default function Home() {
                     required
                     fullWidth
                     name="emails"
-                    onChange={onChange}
+                    onChange={onInputChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -61,7 +61,7 @@ export default function Home() {
                     required
                     fullWidth
                     name="number"
-                    onChange={onChange}
+                    onChange={onInputChange}
                   />
                 </Grid>
               </Grid>

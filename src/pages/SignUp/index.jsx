@@ -12,12 +12,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../config/constants';
-import { SignupApi } from '../api';
+import { SignupApi } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { useAlert } from '../../contexts/alert';
 
 export default function SignUp() {
-  const { formData, onChange } = useFormData();
+  const { formData, onInputChange } = useFormData();
   const navigate = useNavigate();
   const { showSuccess, showError } = useAlert();
 
@@ -59,7 +59,7 @@ export default function SignUp() {
                 id="first_name"
                 label="First Name"
                 autoFocus
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -70,7 +70,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="last_name"
                 autoComplete="family-name"
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -81,7 +81,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -92,7 +92,7 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const useFormData = () => {
   const [formData, setFormData] = useState({});
 
-  const onChange = (e) => {
+  const onInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -12,6 +12,6 @@ export const useFormData = () => {
 
   return {
     formData,
-    onChange,
+    onInputChange,
   };
 };

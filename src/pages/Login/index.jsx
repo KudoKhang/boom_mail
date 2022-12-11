@@ -9,13 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import loginImg from '../../imgs/login.png';
 import { Img } from '../../styles';
 import { URL } from '../../config/constants';
-import { LoginApi } from '../api';
+import { getUser, LoginApi } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { localCache } from '../../utils/localStorage';
 import { useAlert } from '../../contexts/alert';
 
 export default function Login() {
-  const { formData, onChange } = useFormData();
+  const { formData, onInputChange } = useFormData();
   const navigate = useNavigate();
   const { showError } = useAlert();
 
@@ -23,12 +23,16 @@ export default function Login() {
     e.preventDefault();
     try {
       const token = await LoginApi(formData);
-      if (token) {
-        localCache.setUserToken(token);
-        navigate(URL.HOME, { replace: true });
+
+      if (!token) {
+        showError('Sai email hoặc mật khẩu');
         return;
       }
-      showError('Sai email hoặc mật khẩu');
+
+      localCache.setUserToken(token);
+      const user = await getUser();
+      localCache.setUser(user);
+      navigate(URL.HOME, { replace: true });
     } catch (error) {
       showError(error?.response?.data?.message || error?.message);
     }
@@ -55,7 +59,7 @@ export default function Login() {
                 name="email"
                 required
                 fullWidth
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -66,7 +70,7 @@ export default function Login() {
                 name="password"
                 required
                 fullWidth
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </Grid>
           </Grid>
