@@ -26,8 +26,3 @@ export const logoutUser = async () => {
   localCache.clearUser();
   return {};
 };
-
-export const toExternalPayment = async (url) => {
-  const { data } = await axiosIns.post(url);
-  return data;
-};

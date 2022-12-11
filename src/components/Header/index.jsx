@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typo from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../config/constants';
 import { localCache } from '../../utils/localStorage';
@@ -56,10 +57,12 @@ export default function Header() {
           <Typo variant="span">Xin chào</Typo>
           <Typo variant="h6">{`${firstN} ${lastN}`}</Typo>
         </Typo>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
         <Typo component="div" sx={{ ml: 1, display: 'flex', flexDirection: 'column' }}>
           <Typo variant="span">Số tiền</Typo>
           <Typo variant="h6">{`$${amount || 0}`}</Typo>
         </Typo>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
         <Typo component="div" sx={{ ml: 1, display: 'flex', flexDirection: 'column' }}>
           <Typo variant="span">Lượt còn lại</Typo>
           <Typo variant="h6">{`${remaning || 0}`}</Typo>
