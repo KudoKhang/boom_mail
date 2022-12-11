@@ -4,8 +4,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Main, Section } from './styles';
+import { useAuthenticate } from '../hooks/useAuthenticate';
 
 export default function Layout() {
+  useAuthenticate();
+
   return (
     <>
       <CssBaseline />

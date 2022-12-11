@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
 import { useFormData } from '../../hooks/useFormData';
 import { addMailsApi } from '../api';
 import { localCache } from '../../utils/localStorage';
-import { URL } from '../../config/constants';
+import { useAlert } from '../../contexts/alert';
 
 export default function Home() {
   const { formData, onChange } = useFormData();
-  const navigate = useNavigate();
+  const { showError } = useAlert();
 
   const transformEmails = (emails) => {
     return emails.trim().replace(/[ ]+/g, '').split(/\n/);
@@ -25,17 +24,9 @@ export default function Home() {
       const { number, emails } = formData;
       await addMailsApi({ token, n_spam: number }, transformEmails(emails));
     } catch (error) {
-      alert(error?.response?.data?.message || error?.message);
+      showError(error?.response?.data?.message || error?.message);
     }
   };
-
-  useEffect(() => {
-    const token = localCache.getUserToken();
-
-    if (!token) {
-      navigate(URL.LOGIN, { replace: true });
-    }
-  }, []);
 
   return (
     <Container maxWidth="md" sx={{ mt: 8 }}>
