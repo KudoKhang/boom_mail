@@ -32,7 +32,7 @@ export default function Header() {
             Đăng kí
           </Link>
         </nav>
-        <Button href={URL.PRICING} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+        <Button href={URL.PAYMENT} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
           Nạp tiền
         </Button>
         <Typo component="div">

@@ -1,13 +1,10 @@
 import axios from 'axios';
-import isEmpty from 'lodash/isEmpty';
-import storage from './localStorage';
-
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+import { API_URL } from '../config/constants';
+import { localCache } from './localStorage';
 
 const axiosInstance = axios.create({
-  baseURL: baseUrl,
+  baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
     Accept: 'application/json',
   },
 });
@@ -17,13 +14,13 @@ const addAuthToken = (config) => {
   let authToken;
 
   if (/admin\/*/.test(url)) {
-    authToken = storage.getAdminToken();
+    authToken = localCache.getAdminToken();
   } else {
-    authToken = storage.getUserToken();
+    authToken = localCache.getUserToken();
   }
 
-  if (!isEmpty(authToken)) {
-    headers.common.Authorization = `Bearer ${authToken}`;
+  if (authToken) {
+    headers.Authorization = `${authToken}`;
   }
 
   return { ...config, headers };

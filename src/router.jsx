@@ -7,6 +7,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const PageError = lazy(() => import('./pages/PageError'));
 const Home = lazy(() => import('./pages/Home'));
+const Payment = lazy(() => import('./pages/Payment'));
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: 'pricing',
         element: <Pricing />,
+      },
+      {
+        path: 'payment',
+        element: <Payment />,
       },
     ],
   },

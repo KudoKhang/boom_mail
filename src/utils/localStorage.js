@@ -1,4 +1,4 @@
-const state = {
+export const localCache = {
   getState: (key) => {
     const localKey = localStorage.getItem(key);
     try {
@@ -29,6 +29,7 @@ const state = {
   getAdmin() {
     return this.getState('admin');
   },
+  setUserToken(val) {
+    this.set('user_access_token', val);
+  },
 };
-
-export default state;
