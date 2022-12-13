@@ -10,11 +10,26 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
+import { URL } from '../../config/constants';
+import { SignupApi } from '../../api';
+import { useFormData } from '../../hooks/useFormData';
+import { useAlert } from '../../contexts/alert';
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    //
+  const { formData, onInputChange } = useFormData();
+  const navigate = useNavigate();
+  const { showSuccess, showError } = useAlert();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await SignupApi(formData);
+      navigate(URL.LOGIN, { replace: true });
+      showSuccess('Đăng kí thành công!');
+    } catch (error) {
+      showError(error?.response?.data?.message || error?.message);
+    }
   };
 
   return (
@@ -33,27 +48,29 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
+                name="first_name"
                 required
                 fullWidth
-                id="firstName"
+                id="first_name"
                 label="First Name"
                 autoFocus
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
-                id="lastName"
+                id="last_name"
                 label="Last Name"
-                name="lastName"
+                name="last_name"
                 autoComplete="family-name"
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -64,6 +81,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -74,7 +92,7 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="new-password"
+                onChange={onInputChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -84,12 +102,12 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link href={URL.LOGIN} variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
