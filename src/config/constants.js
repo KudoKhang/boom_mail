@@ -6,4 +6,5 @@ export const URL = {
   PAYMENT: '/payment',
 };
 
+// export const API_URL = 'http://15.235.184.92/api';
 export const API_URL = 'http://localhost:8001/api';

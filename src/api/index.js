@@ -22,6 +22,12 @@ export const getUser = async () => {
   return data;
 };
 
+export const paymentHandler = async () => {
+  const token = localCache.getUserToken();
+  const { data } = await axiosIns.post('/payment', {}, { params: { token } });
+  return data;
+};
+
 export const logoutUser = async () => {
   localCache.clearUser();
   return {};
