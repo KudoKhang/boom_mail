@@ -9,6 +9,7 @@ sudo apt install nginx -y
 # sudo apt install nodejs -y
 sudo apt install npm -y
 sudo npm i -g pm2
+sudo apt install gunicorn -y
 
 # sudo apt install ufw
 # sudo ufw enable
@@ -25,7 +26,7 @@ sudo ln -s /etc/nginx/sites-available/boomcheck /etc/nginx/sites-enabled/boomche
 # SSL
 sudo apt install certbot python3-certbot-nginx
 usudo fw status
-sudo certbot --nginx -d example.com -d www.example.com
+sudo certbot --nginx -d boomcheck.io -d www.boomcheck.io
 sudo systemctl status certbot.timer
 
 # MINICONDA

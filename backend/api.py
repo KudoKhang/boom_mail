@@ -44,6 +44,9 @@ def get_data_signup(first_name, last_name, email, password):
 def get_data_login(email, password):
     return login(email, password)
 
+@app.post("/api/changepassword")
+def change_pass(token, old_password, new_password):
+    return change_password(token, old_password, new_password)
 
 @app.post("/validation")
 def validation(token):

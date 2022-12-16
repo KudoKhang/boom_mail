@@ -12,7 +12,7 @@ from Configs import *
 from connect_db import *
 
 sg = sendgrid.SendGridAPIClient("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")
-
+secret_key = "devbyk"
 
 class bcolors:
     HEADER = '\033[95m'
@@ -97,11 +97,9 @@ def login(email, password):
                 "exp": dt
             }
 
-            my_secret = 'k'
-
             encoded_token = jwt.encode(
                 payload=payload_data,
-                key=my_secret,
+                key=secret_key,
                 algorithm='HS256'
             )
 
@@ -112,12 +110,6 @@ def login(email, password):
     except:
         print(f"{bcolors.WARNING}Email not exist, please try again or sign-up here!")
 
-def logout(token):
-    # Delete token user
-    decoded_token = validation_token(token)
-    decoded_token["exp"] = 0
-    # Direct to login index
-    print(f"{bcolors.WARNING}Deleted token!")
 
 
 def get_info_user(token):
@@ -137,7 +129,7 @@ def get_info_user(token):
 
 def validation_token(token):
     try:
-        decode_token = jwt.decode(token, "k", algorithms=['HS256'])
+        decode_token = jwt.decode(token, secret_key, algorithms=['HS256'])
         print("Token is still valid and active")
         return(decode_token)
     except jwt.ExpiredSignatureError:
@@ -200,11 +192,36 @@ def buy(token, package_name):
         print(f"{bcolors.WARNING}Invalid Token")
 
 
+def change_password(token, old_password, new_password):
+    decoded_token = validation_token(token)
+
+    if decoded_token:
+        email = decoded_token["email"] 
+
+        cursor.execute("SELECT password FROM users WHERE email = %s", [email])
+
+        old_password_endcode = str(hashlib.md5(old_password.encode()).digest()) 
+
+        password_from_database = cursor.fetchone()[0]
+
+        if old_password_endcode == password_from_database:
+            new_password_endcode = str(hashlib.md5(new_password.encode()).digest())
+            cursor.execute("UPDATE users set password = %s where email = %s", [new_password_endcode, email])
+            cnx.commit()
+
+            print(f"{bcolors.OKCYAN}Password changed!")
+
+        else:
+            print(f"{bcolors.WARNING}Old password incorrect!")
+    else:
+        print(f"{bcolors.WARNING}Invalid Token")
+
 if __name__ == '__main__':
     # signup("khang", "nghia", "test3@gmail.com", "123123")
     token = login("test@gmail.com", "123123")
+    change_password(token, "123123", "123123")
     # spam(token, ["thanhchem.k39a2@gmail.com"], 15000)
-    print(get_info_user(token))
+    # print(get_info_user(token))
     # print(validation_token(token))
     # logout(token)
     # recharge(token, 1000)

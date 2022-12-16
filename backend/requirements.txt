@@ -4,3 +4,4 @@ PyJWT==2.6.0
 sendgrid
 fastapi
 uvicorn
+gunicorn
