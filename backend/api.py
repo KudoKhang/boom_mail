@@ -19,6 +19,8 @@ app = FastAPI(title="Boom Mail API", description=app_desc)
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "http://boomcheck.io",
+    "https://boomcheck.io"
 ]
 
 app.add_middleware(
@@ -77,5 +79,5 @@ async def payment(SUCCESS: bool = True, token: str = None, request: Request = No
 
 
 if __name__ == '__main__':
-    # uvicorn.run(app)
-    uvicorn.run(app, host="localhost", port=8001)
+    uvicorn.run(app)
+    # uvicorn.run(app, host="localhost", port=8001)
