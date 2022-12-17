@@ -32,3 +32,9 @@ export const logoutUser = async () => {
   localCache.clearUser();
   return {};
 };
+
+export const buyPackage = async (name) => {
+  const token = localCache.getUserToken();
+  const { data } = await axiosIns.post('/buy', {}, { params: { token, package_name: name } });
+  return data;
+};

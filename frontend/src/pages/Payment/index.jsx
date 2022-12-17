@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useFormData } from '../../hooks/useFormData';
+import { API_URL } from '../../config/constants';
+import { localCache } from '../../utils/localStorage';
 
 const TARGET_URL = 'https://perfectmoney.com/api/step1.asp';
 const PAYMENT_OPTIONS = {
@@ -13,10 +15,8 @@ const PAYMENT_OPTIONS = {
   PAYEE_NAME: 'boomcheck.io',
   PAYMENT_ID: 'BOOMCHECK',
   PAYMENT_UNITS: 'USD',
-  STATUS_URL: 'https://boomcheck.io/handlers/paymentHandler.php?for=k',
-  PAYMENT_URL: 'https://boomcheck.io/handlers/paymentHandler.php?for=k',
+  // STATUS_URL: `${API_URL}/payment`,
   PAYMENT_URL_METHOD: 'POST',
-  NOPAYMENT_URL: 'http://0.0.0.0:8001/payment',
   NOPAYMENT_URL_METHOD: 'GET',
   SUGGESTED_MEMO: '',
   BAGGAGE_FIELDS: '',
@@ -29,14 +29,8 @@ export default function Payment() {
     PAYMENT_AMOUNT: '',
   });
 
-  // const handleSubmit = async () => {
-  //   const params = { ...PAYMENT_OPTIONS, ...formData };
-  //   const urlParams = new URLSearchParams(Object.entries(params));
-  //   const fullUrl = `${TARGET_URL}?${urlParams.toString()}`;
-
-  //   const res = await toExternalPayment(fullUrl);
-  //   window.location.replace(fullUrl);
-  // };
+  const getPaymentUrl = () => `${API_URL}/payment?token=${localCache.getUserToken()}`;
+  const getNoPaymentUrl = () => `${API_URL}/payment_failed`;
 
   return (
     <Container maxWidth="xs" sx={{ mt: 8 }}>
@@ -55,6 +49,8 @@ export default function Payment() {
                   {Object.entries(PAYMENT_OPTIONS).map(([key, value]) => (
                     <input key={key} name={key} value={value} type="hidden" />
                   ))}
+                  <input name="PAYMENT_URL" value={getPaymentUrl()} type="hidden" />
+                  <input name="NOPAYMENT_URL" value={getNoPaymentUrl()} type="hidden" />
                   <TextField
                     id="input-amount"
                     name="PAYMENT_AMOUNT"
