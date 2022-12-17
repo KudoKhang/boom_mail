@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,33 +10,65 @@ import StarIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import { useOutletContext } from 'react-router-dom';
+import { buyPackage } from '../../api';
+import { useAlert } from '../../contexts/alert';
+import ConfirmDialog from '../../components/ConfirmDialog';
 
 const tiers = [
   {
     title: 'Normal',
     price: '20',
     description: ['1.000 request spam', 'Help center access', 'Email support'],
-    buttonText: 'Sign up for free',
-    buttonVariant: 'outlined',
+    text: 'Buy',
+    value: 'normal',
   },
   {
     title: 'Vip',
     subheader: 'Most popular',
     price: '80',
     description: ['5.000 request spam', 'Help center access', 'Phone & email support'],
-    buttonText: 'Get started',
-    buttonVariant: 'contained',
+    text: 'Buy',
+    value: 'vip',
   },
   {
     title: 'Pro',
     price: '130',
     description: ['10.000 request spam', 'Help center access', 'Phone & email support'],
-    buttonText: 'Contact us',
-    buttonVariant: 'outlined',
+    text: 'Buy',
+    value: 'pro',
   },
 ];
 
-function PricingContent() {
+export default function Pricing() {
+  // const navigate = useNavigate();
+  const { showSuccess, showError } = useAlert();
+  const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const { reloadUser } = useOutletContext();
+
+  const handleBuy = async () => {
+    try {
+      await buyPackage(selectedItem?.value);
+      await reloadUser();
+      showSuccess('Buy successful');
+    } catch (error) {
+      showError(error?.response?.data?.message || error?.message);
+    } finally {
+      closePopup();
+    }
+  };
+
+  const openPopup = (selected) => {
+    setOpenConfirmPopup(true);
+    setSelectedItem(selected);
+  };
+
+  const closePopup = () => {
+    setOpenConfirmPopup(false);
+    setSelectedItem({});
+  };
+
   return (
     <>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -46,11 +78,12 @@ function PricingContent() {
           Pricing
         </Typography>
         <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Bảng giá spam email. Nếu có thắc mắc hoặc cần tư vấn, vui lòng liên hệ trực tiếp với chủ shop để được giải đáp.
+          Bảng giá spam email. Nếu có thắc mắc hoặc cần tư vấn, vui lòng liên hệ trực tiếp với chủ
+          shop để được giải đáp.
         </Typography>
       </Container>
       {/* End hero unit */}
-      <Container maxWidth="md" component="main">
+      <Container maxWidth="md" component="main" sx={{ mb: 3 }}>
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier) => (
             // Enterprise card is full width at sm breakpoint
@@ -96,19 +129,22 @@ function PricingContent() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth>{tier.buttonText}</Button>
+                  <Button variant="outlined" fullWidth onClick={() => openPopup(tier)}>
+                    {tier.text}
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
-      {/* Footer */}
-      {/* End footer */}
+      <ConfirmDialog
+        open={openConfirmPopup}
+        title="Confirm"
+        content={`Do you want buy package ${selectedItem?.title}?`}
+        handleCancel={closePopup}
+        handleConfirm={handleBuy}
+      />
     </>
   );
-}
-
-export default function Pricing() {
-  return <PricingContent />;
 }

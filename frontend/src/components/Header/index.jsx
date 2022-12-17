@@ -4,11 +4,11 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typo from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../config/constants';
 import { localCache } from '../../utils/localStorage';
 import { logoutUser } from '../../api';
+import AccountMenu from './AccountMenu';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -25,17 +25,17 @@ export default function Header() {
         <>
           <nav>
             <Link variant="button" href={URL.SIGNUP} sx={{ my: 1, mx: 1.5 }}>
-              Đăng kí
+              Sign up
             </Link>
           </nav>
           <Button href={URL.LOGIN} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-            Đăng nhập
+            Sign in
           </Button>
         </>
       );
     }
 
-    const { first_name: firstN, last_name: lastN, request_remaning: remaning, amount } = user;
+    const { first_name: firstN, last_name: lastN } = user;
 
     return (
       <>
@@ -44,32 +44,19 @@ export default function Header() {
             Boom mail
           </Link>
           <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5 }}>
-            Kiểm tra CCV
+            Check CCV
           </Link>
           <Link variant="button" href={URL.PRICING} sx={{ my: 1, mx: 1.5 }}>
-            Chọn gói
+            Select packages
           </Link>
         </nav>
         <Button href={URL.PAYMENT} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-          Nạp tiền
+          Add money
         </Button>
         <Typo component="div">
-          <Typo variant="span">Xin chào</Typo>
           <Typo variant="h6">{`${firstN} ${lastN}`}</Typo>
         </Typo>
-        <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
-        <Typo component="div" sx={{ ml: 1, display: 'flex', flexDirection: 'column' }}>
-          <Typo variant="span">Số tiền</Typo>
-          <Typo variant="h6">{`$${amount || 0}`}</Typo>
-        </Typo>
-        <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
-        <Typo component="div" sx={{ ml: 1, display: 'flex', flexDirection: 'column' }}>
-          <Typo variant="span">Lượt còn lại</Typo>
-          <Typo variant="h6">{`${remaning || 0}`}</Typo>
-        </Typo>
-        <Button variant="outlined" sx={{ my: 1, mx: 1.5 }} onClick={logout}>
-          Đăng xuất
-        </Button>
+        <AccountMenu user={user} logout={logout} />
       </>
     );
   };

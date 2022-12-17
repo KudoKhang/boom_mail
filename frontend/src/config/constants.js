@@ -6,6 +6,5 @@ export const URL = {
   PAYMENT: '/payment',
 };
 
-// export const API_URL = 'http://15.235.184.92/api';
-// export const API_URL = 'https://boomcheck.io/api';
-export const API_URL = 'http://localhost:8000/api';
+export const API_URL = process.env.REACT_APP_API_URL;
+export const APP_URL = process.env.REACT_APP_URL;
