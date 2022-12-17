@@ -219,13 +219,13 @@ def change_password(token, old_password, new_password):
 if __name__ == '__main__':
     # signup("khang", "nghia", "test3@gmail.com", "123123")
     token = login("test@gmail.com", "123123")
-    change_password(token, "123123", "123123")
+    # change_password(token, "123123", "123123")
     # spam(token, ["thanhchem.k39a2@gmail.com"], 15000)
     # print(get_info_user(token))
     # print(validation_token(token))
     # logout(token)
     # recharge(token, 1000)
-    # buy(token, "vip")
+    buy(token, "vip")
 
 
 

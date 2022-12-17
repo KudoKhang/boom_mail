@@ -56,7 +56,7 @@ def validation(token):
 
 
 @app.post("/api/buy")
-def buy(token, package_name):
+def buy_request(token, package_name):
     return buy(token, package_name)
 
 
