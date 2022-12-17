@@ -175,6 +175,8 @@ def buy(token, package_name):
 
         if package[package_name][1] > amount:
             print(f"{bcolors.WARNING}Not enough amount, please recharge to conntinue...")
+            return 422, "Not enough amount, please recharge to conntinue..."
+            
         else:
             # Sub monney
             amount_remaining = amount - package[package_name][1]
@@ -187,9 +189,11 @@ def buy(token, package_name):
             cnx.commit()
 
             print(f"{bcolors.OKBLUE}Successfully bought {package[package_name][0]} to account {email}")
+            return 200
 
     else:
         print(f"{bcolors.WARNING}Invalid Token")
+        return 422, "Invalid Token" 
 
 
 def change_password(token, old_password, new_password):
