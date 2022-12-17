@@ -41,7 +41,7 @@ export default function Header() {
       <>
         <nav>
           <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5 }}>
-            Bom mail
+            Boom mail
           </Link>
           <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5 }}>
             Kiểm tra CCV
@@ -82,8 +82,8 @@ export default function Header() {
       sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
     >
       <Toolbar sx={{ flexWrap: 'wrap' }}>
-        <Typo variant="span" sx={{ flexGrow: 1 }}>
-          Logo
+        <Typo variant="span" sx={{ flexGrow: 3 }}>
+          BoomCheck
         </Typo>
         {showMenu()}
       </Toolbar>

@@ -90,7 +90,7 @@ def login(email, password):
         if password_encode == password_from_db:
             print(f"{bcolors.OKBLUE}Login Successfully!")
 
-            dt = int(time.time()) + 300
+            dt = int(time.time()) + (60 * 60 * 3)
 
             payload_data = {
                 "email": email,
