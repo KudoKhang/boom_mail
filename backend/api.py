@@ -1,6 +1,6 @@
 from typing import List
 import uvicorn
-
+import fastapi
 from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.params import Query
 from starlette.responses import RedirectResponse
@@ -65,17 +65,21 @@ async def start_spam(token: str, targets: List, n_spam: int):
     spam(token, targets, int(n_spam))
 
 
+@app.get("/api/payment_failed")
+def direct_to_homepage():
+    print("Failed!")
+    return RedirectResponse("https://boomcheck.io")
+    
+
 @app.post("/api/payment/")
-async def payment(SUCCESS: bool = True, token: str = None, request: Request = None):
-    if SUCCESS:
-        res = await request.body()
-        res = res.decode("utf-8")
-        PAYMENT_AMOUNT = res.split("&")[1].split("=")[1]
-        recharge(token, float(PAYMENT_AMOUNT))
-        return "Done!"
-    else:
-        # Direct to home
-        return "Failed!"
+async def payment(token: str = None, request: Request = None):
+    res = await request.body()
+    res = res.decode("utf-8")
+    PAYMENT_AMOUNT = res.split("&")[1].split("=")[1]
+    recharge(token, float(PAYMENT_AMOUNT))
+    print("Successful!")
+    return RedirectResponse("https://boomcheck.io/login")
+        
 
 
 if __name__ == '__main__':
