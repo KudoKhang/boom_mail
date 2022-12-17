@@ -9,7 +9,7 @@ function Copyright() {
     <Typography variant="body2" color="text.secondary">
       {'Copyright © '}
       <Link color="inherit" href="/">
-        Your Website
+        boomcheck.io
       </Link>{' '}
       {new Date().getFullYear()}
     </Typography>
@@ -29,7 +29,7 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="sm">
-        <Typography variant="body1">My sticky footer can be found here.</Typography>
+        <Typography variant="body1">Cung cấp dịch vụ BoomMail, CheckCCV, CheckMailLive.</Typography>
         <Copyright />
       </Container>
     </Box>
