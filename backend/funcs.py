@@ -76,11 +76,11 @@ def signup(first_name, last_name, email, password):
         val = (first_name, last_name, email, password, 0, 0, 0)
         cursor.execute(sql, val)
         cnx.commit()
-        # return 202
         print(f"{bcolors.OKCYAN}Store user to database successfully!")
+        return 200
     else:
-        # return 400
         print(f"{bcolors.WARNING}Email had exist, please chose other email!")
+        return 422
 
 def login(email, password):
     try:
@@ -175,8 +175,8 @@ def buy(token, package_name):
 
         if package[package_name][1] > amount:
             print(f"{bcolors.WARNING}Not enough amount, please recharge to conntinue...")
-            return 422, "Not enough amount, please recharge to conntinue..."
-            
+            return "Not enough"
+
         else:
             # Sub monney
             amount_remaining = amount - package[package_name][1]
@@ -189,11 +189,11 @@ def buy(token, package_name):
             cnx.commit()
 
             print(f"{bcolors.OKBLUE}Successfully bought {package[package_name][0]} to account {email}")
-            return 200
+            return "Successfully"
 
     else:
         print(f"{bcolors.WARNING}Invalid Token")
-        return 422, "Invalid Token" 
+        return "Invalid Token" 
 
 
 def change_password(token, old_password, new_password):

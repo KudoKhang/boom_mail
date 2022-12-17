@@ -1,7 +1,6 @@
 from typing import List
 import uvicorn
-import fastapi
-from fastapi import FastAPI, File, UploadFile, Request
+from fastapi import FastAPI, File, UploadFile, Request, Response, status, HTTPException
 from fastapi.params import Query
 from starlette.responses import RedirectResponse
 
@@ -37,9 +36,11 @@ def get_user(token):
     return get_info_user(token)
 
 
-@app.post("/api/signup")
+@app.post("/api/signup", status_code=200)
 def get_data_signup(first_name, last_name, email, password):
-    return signup(first_name, last_name, email, password)
+    stt = signup(first_name, last_name, email, password)
+    if stt == 422:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 @app.post("/api/login")
@@ -55,9 +56,15 @@ def validation(token):
     return validation_token(token)
 
 
-@app.post("/api/buy")
+@app.post("/api/buy", status_code=200)
 def buy_request(token, package_name):
-    return buy(token, package_name)
+    stt = buy(token, package_name)
+    if stt == "Invalid Token":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    elif stt == "Not enough":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 @app.post("/api/spam")
