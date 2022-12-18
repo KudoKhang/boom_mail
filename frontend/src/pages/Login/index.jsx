@@ -13,11 +13,13 @@ import { getUser, LoginApi } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { localCache } from '../../utils/localStorage';
 import { useAlert } from '../../contexts/alert';
+import { useHandleError } from '../../hooks/useHandleError';
 
 export default function Login() {
   const { formData, onInputChange } = useFormData();
-  const navigate = useNavigate();
   const { showError } = useAlert();
+  const { handleResponseMsg } = useHandleError();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function Login() {
       const token = await LoginApi(formData);
 
       if (!token) {
-        showError('Sai email hoặc mật khẩu');
+        showError('Wrong email or password, please try again');
         return;
       }
 
@@ -34,7 +36,7 @@ export default function Login() {
       localCache.setUser(user);
       navigate(URL.HOME, { replace: true });
     } catch (error) {
-      showError(error?.response?.data?.message || error?.message);
+      handleResponseMsg(error);
     }
   };
 
