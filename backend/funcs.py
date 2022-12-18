@@ -117,7 +117,7 @@ def login(email, password):
 
 def get_info_user(token):
     decoded_token = validation_token(token)
-    if token:
+    if decoded_token:
         email = decoded_token["email"]
         cursor.execute("SELECT * FROM users WHERE email = %s", [email])
         info = cursor.fetchall()[0]
