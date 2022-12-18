@@ -58,11 +58,14 @@ def spam(token, targets, n_spam):
                 print(err)
 
             print(f"{bcolors.OKBLUE}\nSuccessful sent {n_spam * len(targets)} email spam to {len(targets)} targets!")
+            return 200
 
         else:
             print(f"{bcolors.WARNING}Not enough resquest!")
+            return 403
     else:
         print(f"{bcolors.WARNING}Invalid Token")
+        return 401
 
 
 def signup(first_name, last_name, email, password):
@@ -80,7 +83,7 @@ def signup(first_name, last_name, email, password):
         return 200
     else:
         print(f"{bcolors.WARNING}Email had exist, please chose other email!")
-        return 422
+        return 400
 
 def login(email, password):
     try:
@@ -107,10 +110,10 @@ def login(email, password):
 
         else:
             print(f"{bcolors.WARNING}Password is incorrect, please try again!")
+            return 401
     except:
         print(f"{bcolors.WARNING}Email not exist, please try again or sign-up here!")
-
-
+        return 401
 
 def get_info_user(token):
     decoded_token = validation_token(token)
@@ -125,17 +128,19 @@ def get_info_user(token):
         return info_final
     else:
         print(f"{bcolors.WARNING}Invalid Token!")
+        return "Invalid Token"
 
 
 def validation_token(token):
     try:
         decode_token = jwt.decode(token, secret_key, algorithms=['HS256'])
         print("Token is still valid and active")
-        return(decode_token)
+        return decode_token
     except jwt.ExpiredSignatureError:
         print("Token expired. Get new one")
     except jwt.InvalidTokenError:
         print("Invalid Token")
+
 
 def recharge(token, amount):
     # VALIDATION
@@ -217,8 +222,10 @@ def change_password(token, old_password, new_password):
 
         else:
             print(f"{bcolors.WARNING}Old password incorrect!")
+            return 400
     else:
         print(f"{bcolors.WARNING}Invalid Token")
+        return 401
 
 if __name__ == '__main__':
     # signup("khang", "nghia", "test3@gmail.com", "123123")
@@ -230,8 +237,6 @@ if __name__ == '__main__':
     # logout(token)
     # recharge(token, 1000)
     buy(token, "vip")
-
-
 
     # cursor.execute('SELECT * FROM users')
     # users = cursor.fetchall()
