@@ -43,17 +43,18 @@ def spam(token, targets, n_spam):
 
             # Spam email to targets
             try:
-                for target in targets:
-                    for spam in range(n_spam):
-                        from_email = Email(random.choice(bots))
-                        to_email = To(target)
-                        subject = random.choice(subjects) + str(random.randint(1000, 100000))
-                        content = Content("text/plain", random.choice(contents) + " " + str(random.randint(100000, 999999)))
-                        mail = Mail(from_email, to_email, subject, content)
-                        response = sg.client.mail.send.post(request_body=mail.get())
-                        if response.status_code == 202:
-                            print(f"{bcolors.OKGREEN} Successful")
-                        time.sleep(1)
+                target = [(t, random.choice(names)) for t in targets]
+
+                for spam in range(n_spam):
+                    from_email = (random.choice(bots), random.choice(names))
+                    to_email = target
+                    subject = random.choice(subjects) + str(random.randint(1000, 100000))
+                    content = Content("text/plain", random.choice(contents) + " " + str(random.randint(100000, 999999)))
+                    mail = Mail(from_email, to_email, subject, content)
+                    response = sg.client.mail.send.post(request_body=mail.get())
+                    if response.status_code == 202:
+                        print(f"{bcolors.OKGREEN} Successful")
+                    time.sleep(1)
             except Exception as err:
                 print(err)
 
