@@ -24,5 +24,8 @@ with open("Configs/subjects.txt", "r") as f:
 with open("Configs/contents.txt", "r") as f:
     contents = [line.rstrip() for line in f]
 
+with open("Configs/names.txt", "r") as f:
+    names = [line.rstrip() for line in f]
+
 if __name__ == "__main__":
     print(random.choice(contents) + " " + str(random.randint(100000, 999999)))
