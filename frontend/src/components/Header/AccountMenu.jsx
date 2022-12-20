@@ -74,7 +74,7 @@ export default function AccountMenu({ logout, user }) {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typo variant="span">Amount: </Typo>
+          <Typo variant="span">Money: </Typo>
           <Typo variant="h6">{`$${amount || 0}`}</Typo>
         </MenuItem>
         <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
