@@ -1,5 +1,3 @@
-import mysql.connector
-
 import hashlib
 import jwt
 
@@ -11,20 +9,7 @@ from sendgrid.helpers.mail import *
 from Configs import *
 from connect_db import *
 
-sg = sendgrid.SendGridAPIClient("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")
-secret_key = "devbyk"
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
+sg = sendgrid.SendGridAPIClient(sendgrid_key)
 
 def spam(token, targets, n_spam):
     # Check request_remaning
@@ -54,7 +39,7 @@ def spam(token, targets, n_spam):
                     response = sg.client.mail.send.post(request_body=mail.get())
                     if response.status_code == 202:
                         print(f"{bcolors.OKGREEN} Successful")
-                    time.sleep(1)
+                    time.sleep(time_sleep)
             except Exception as err:
                 print(err)
 
@@ -172,9 +157,6 @@ def buy(token, package_name):
 
     if decoded_token:
         email = decoded_token["email"]
-        package = {"normal": [1000, 20],
-                   "vip": [5000, 80],
-                   "pro": [10000, 130]}
 
         cursor.execute("SELECT amount FROM users WHERE email = %s", [email])
         amount = cursor.fetchone()[0]
