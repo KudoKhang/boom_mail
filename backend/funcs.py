@@ -22,7 +22,7 @@ def spam(token, targets, n_spam):
 
         if n_spam <= request_remaining:
             # Update request_remaning
-            new_request_remaining = request_remaining - n_spam
+            new_request_remaining = request_remaining - (n_spam * len(targets))
             cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
             cnx.commit()
 
@@ -53,6 +53,33 @@ def spam(token, targets, n_spam):
         print(f"{bcolors.WARNING}Invalid Token")
         return 401
 
+def admin_edit_user(token, email_user, properties, value):
+    decoded_token = validation_token(token)
+    if decoded_token:
+        email = decoded_token["email"]
+        if email == "admin":
+            if properties == "first_name":
+                cursor.execute("UPDATE users set first_name = %s where email = %s", [value, email_user])
+
+            if properties == "last_name":
+                cursor.execute("UPDATE users set last_name = %s where email = %s", [value, email_user])
+
+            if properties == "email":
+                cursor.execute("UPDATE users set email = %s where email = %s", [value, email_user])
+
+            if properties == "amount":
+                cursor.execute("UPDATE users set amount = %s where email = %s", [value, email_user])
+
+            if properties == "amount_total":
+                cursor.execute("UPDATE users set amount_total = %s where email = %s", [value, email_user])
+            
+            if properties == "request_remaining":
+                cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
+
+            cnx.commit()
+            return "Successful"
+    else:
+        return "Invalid Token"
 
 def signup(first_name, last_name, email, password):
     # Check email had axist
@@ -116,7 +143,6 @@ def get_info_user(token):
         print(f"{bcolors.WARNING}Invalid Token!")
         return "Invalid Token"
 
-
 def validation_token(token):
     try:
         decode_token = jwt.decode(token, secret_key, algorithms=['HS256'])
@@ -126,7 +152,6 @@ def validation_token(token):
         print("Token expired. Get new one")
     except jwt.InvalidTokenError:
         print("Invalid Token")
-
 
 def recharge(token, amount):
     # VALIDATION
@@ -150,7 +175,6 @@ def recharge(token, amount):
         print(f"{bcolors.OKCYAN}Recharged {amount}$ to {email} account!")
     else:
         print(f"{bcolors.WARNING}Invalid Token")
-
 
 def buy(token, package_name):
     decoded_token = validation_token(token)
@@ -182,7 +206,6 @@ def buy(token, package_name):
     else:
         print(f"{bcolors.WARNING}Invalid Token")
         return "Invalid Token" 
-
 
 def change_password(token, old_password, new_password):
     decoded_token = validation_token(token)
