@@ -75,6 +75,9 @@ def admin_edit_user(token, email_user, properties, value):
             
             if properties == "request_remaining":
                 cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
+            
+            if properties == "delete":
+                cursor.execute("DELETE FROM users where email = %s", [email_user])
 
             cnx.commit()
             return "Successful"
