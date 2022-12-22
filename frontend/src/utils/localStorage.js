@@ -39,4 +39,14 @@ export const localCache = {
     this.remove('user_access_token');
     this.remove('user');
   },
+  setAdminToken(val) {
+    this.set('admin_access_token', val);
+  },
+  setAdmin(val) {
+    this.set('admin', val);
+  },
+  clearAdmin() {
+    this.remove('admin_access_token');
+    this.remove('admin');
+  },
 };

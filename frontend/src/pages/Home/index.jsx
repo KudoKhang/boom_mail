@@ -13,23 +13,14 @@ export default function Home() {
   const { formData, onInputChange } = useFormData();
   const { handleResponseMsg } = useHandleError();
   const [logEmails, setLogEmails] = useState([]);
-  const [listEmails, setListEmails] = useState([]);
-  const [intervalId, setIntervalId] = useState();
+  const [reqNumber, setReqNumber] = useState(0);
 
   const showLogEmails = () => {
     try {
-      const id = setInterval(
-        (emails, logs) => {
-          console.log(12, emails);
-          console.log(33, logs.length);
-
-          setLogEmails((prev) => [...prev, `${emails[logs.length]} ... done`]);
-        },
-        1000,
-        listEmails,
-        logEmails
-      );
-      setIntervalId(id);
+      setTimeout(() => {
+        setLogEmails((prev) => [...prev, `Request: ${prev.length + 1} ... done`]);
+        setReqNumber((prev) => prev - 1);
+      }, 3000);
     } catch {
       //
     }
@@ -55,30 +46,37 @@ export default function Home() {
       if (!list?.length) {
         throw new Error('Emails invalid');
       }
-      setListEmails(list);
-      // await addMailsApi({ token, n_spam: number }, list);
+      setReqNumber(number);
+      await addMailsApi({ token, n_spam: number }, list);
     } catch (error) {
       handleResponseMsg(error);
     }
   };
 
-  useEffect(() => {
-    if (!logEmails?.length) return;
+  // useEffect(() => {
+  //   if (!logEmails?.length) return;
 
-    if (logEmails.length >= listEmails.length) {
-      clearInterval(intervalId);
-      setListEmails([]);
-    }
-  }, [logEmails]);
+  //   if (logEmails.length >= listEmails.length) {
+  //     setListEmails([]);
+  //     return;
+  //   }
+
+  //   showLogEmails();
+  // }, [logEmails]);
 
   useEffect(() => {
-    if (!listEmails?.length) return;
+    if (!reqNumber) return;
     showLogEmails();
-  }, [listEmails]);
+  }, [reqNumber]);
 
   return (
     <Container maxWidth="md" sx={{ mt: 8 }}>
       <Grid container spacing={2}>
+        <Grid item xs={6}>
+          Description
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={6}>
           <Box
             sx={{
@@ -92,7 +90,7 @@ export default function Home() {
                 <Grid item xs={12}>
                   <TextField
                     id="input-emails"
-                    label="Danh sách email"
+                    label="List emails"
                     multiline
                     minRows={8}
                     maxRows={8}
@@ -105,7 +103,7 @@ export default function Home() {
                 <Grid item xs={12}>
                   <TextField
                     id="input-password"
-                    label="Số lượt"
+                    label="Number"
                     required
                     fullWidth
                     name="number"
@@ -114,7 +112,7 @@ export default function Home() {
                 </Grid>
               </Grid>
               <Button type="submit" variant="contained" sx={{ my: 3 }} fullWidth>
-                Bắt đầu
+                Start
               </Button>
             </Box>
           </Box>
@@ -122,7 +120,7 @@ export default function Home() {
         <Grid item xs={6}>
           <TextField
             id="logs"
-            label="Kết quả"
+            label="Result"
             multiline
             minRows={8}
             maxRows={8}
