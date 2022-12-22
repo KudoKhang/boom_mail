@@ -38,3 +38,15 @@ export const buyPackage = async (name) => {
   const { data } = await axiosIns.post('/buy', {}, { params: { token, package_name: name } });
   return data;
 };
+
+// admin
+export const getAdmin = async () => {
+  const token = localCache.getAdminToken();
+  const { data } = await axiosIns.post('/user', {}, { params: { token } });
+  return data;
+};
+
+export const logoutAdmin = async () => {
+  localCache.clearAdmin();
+  return {};
+};

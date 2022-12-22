@@ -24,11 +24,15 @@ export default function Header() {
       return (
         <>
           <nav>
-            <Link variant="button" href={URL.SIGNUP} sx={{ my: 1, mx: 1.5 }}>
+            <Link variant="button" href={URL.SIGNUP} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
               Sign up
             </Link>
           </nav>
-          <Button href={URL.LOGIN} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+          <Button
+            href={URL.LOGIN}
+            variant="outlined"
+            sx={{ my: 1, mx: 1.5, color: 'common.white' }}
+          >
             Sign in
           </Button>
         </>
@@ -40,17 +44,21 @@ export default function Header() {
     return (
       <>
         <nav>
-          <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5 }}>
+          <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
             Boom mail
           </Link>
-          <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5 }}>
+          <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
             Check CCV
           </Link>
-          <Link variant="button" href={URL.PRICING} sx={{ my: 1, mx: 1.5 }}>
+          <Link variant="button" href={URL.PRICING} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
             Select packages
           </Link>
         </nav>
-        <Button href={URL.PAYMENT} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+        <Button
+          href={URL.PAYMENT}
+          variant="outlined"
+          sx={{ my: 1, mx: 1.5, color: 'common.white', borderColor: 'common.white' }}
+        >
           Add money
         </Button>
         <Typo component="div">
@@ -66,7 +74,11 @@ export default function Header() {
       position="static"
       color="default"
       elevation={0}
-      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+      sx={{
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        backgroundColor: 'primary.main',
+        color: 'common.white',
+      }}
     >
       <Toolbar sx={{ flexWrap: 'wrap' }}>
         <Typo variant="span" sx={{ flexGrow: 3 }}>

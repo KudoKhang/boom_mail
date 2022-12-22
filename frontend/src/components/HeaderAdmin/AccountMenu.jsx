@@ -6,11 +6,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-import Typo from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
 
-export default function AccountMenu({ logout, user }) {
+export default function AccountMenu({ logout }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -19,8 +17,6 @@ export default function AccountMenu({ logout, user }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const { request_remaning: remaning, amount } = user;
 
   return (
     <>
@@ -73,15 +69,6 @@ export default function AccountMenu({ logout, user }) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typo variant="span">Money: </Typo>
-          <Typo variant="h6">{`$${amount || 0}`}</Typo>
-        </MenuItem>
-        <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typo variant="span">Remaning requests: </Typo>
-          <Typo variant="h6">{`${remaning || 0}`}</Typo>
-        </MenuItem>
-        <Divider />
         <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
