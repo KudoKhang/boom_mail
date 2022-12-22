@@ -1,5 +1,3 @@
-import mysql.connector
-
 import hashlib
 import jwt
 
@@ -11,20 +9,7 @@ from sendgrid.helpers.mail import *
 from Configs import *
 from connect_db import *
 
-sg = sendgrid.SendGridAPIClient("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")
-secret_key = "devbyk"
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
+sg = sendgrid.SendGridAPIClient(sendgrid_key)
 
 def spam(token, targets, n_spam):
     # Check request_remaning
@@ -37,7 +22,7 @@ def spam(token, targets, n_spam):
 
         if n_spam <= request_remaining:
             # Update request_remaning
-            new_request_remaining = request_remaining - n_spam
+            new_request_remaining = request_remaining - (n_spam * len(targets))
             cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
             cnx.commit()
 
@@ -54,7 +39,7 @@ def spam(token, targets, n_spam):
                     response = sg.client.mail.send.post(request_body=mail.get())
                     if response.status_code == 202:
                         print(f"{bcolors.OKGREEN} Successful")
-                    time.sleep(1)
+                    time.sleep(time_sleep)
             except Exception as err:
                 print(err)
 
@@ -68,6 +53,36 @@ def spam(token, targets, n_spam):
         print(f"{bcolors.WARNING}Invalid Token")
         return 401
 
+def admin_edit_user(token, email_user, properties, value):
+    decoded_token = validation_token(token)
+    if decoded_token:
+        email = decoded_token["email"]
+        if email == "admin":
+            if properties == "first_name":
+                cursor.execute("UPDATE users set first_name = %s where email = %s", [value, email_user])
+
+            if properties == "last_name":
+                cursor.execute("UPDATE users set last_name = %s where email = %s", [value, email_user])
+
+            if properties == "email":
+                cursor.execute("UPDATE users set email = %s where email = %s", [value, email_user])
+
+            if properties == "amount":
+                cursor.execute("UPDATE users set amount = %s where email = %s", [value, email_user])
+
+            if properties == "amount_total":
+                cursor.execute("UPDATE users set amount_total = %s where email = %s", [value, email_user])
+            
+            if properties == "request_remaining":
+                cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
+            
+            if properties == "delete":
+                cursor.execute("DELETE FROM users where email = %s", [email_user])
+
+            cnx.commit()
+            return "Successful"
+    else:
+        return "Invalid Token"
 
 def signup(first_name, last_name, email, password):
     # Check email had axist
@@ -131,7 +146,6 @@ def get_info_user(token):
         print(f"{bcolors.WARNING}Invalid Token!")
         return "Invalid Token"
 
-
 def validation_token(token):
     try:
         decode_token = jwt.decode(token, secret_key, algorithms=['HS256'])
@@ -141,7 +155,6 @@ def validation_token(token):
         print("Token expired. Get new one")
     except jwt.InvalidTokenError:
         print("Invalid Token")
-
 
 def recharge(token, amount):
     # VALIDATION
@@ -166,15 +179,11 @@ def recharge(token, amount):
     else:
         print(f"{bcolors.WARNING}Invalid Token")
 
-
 def buy(token, package_name):
     decoded_token = validation_token(token)
 
     if decoded_token:
         email = decoded_token["email"]
-        package = {"normal": [1000, 20],
-                   "vip": [5000, 80],
-                   "pro": [10000, 130]}
 
         cursor.execute("SELECT amount FROM users WHERE email = %s", [email])
         amount = cursor.fetchone()[0]
@@ -200,7 +209,6 @@ def buy(token, package_name):
     else:
         print(f"{bcolors.WARNING}Invalid Token")
         return "Invalid Token" 
-
 
 def change_password(token, old_password, new_password):
     decoded_token = validation_token(token)

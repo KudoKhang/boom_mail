@@ -1,6 +1,19 @@
 import os
 import random
 
+#------------ configs ------------------
+secret_key = "devbyk"
+sendgrid_key = "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"
+time_sleep = 3
+
+package = {
+    "normal": [1000, 20],
+    "vip"   : [5000, 80],
+    "pro"   : [10000, 130]
+}
+
+#-----------------------------------
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'

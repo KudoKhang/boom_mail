@@ -89,6 +89,12 @@ async def start_spam(token: str, targets: List, n_spam: int):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough resquest!")
 
 
+@app.post("/api/admin_edit", status_code=200)
+def edit_user(token: str, email_user: str, properties: str, value: str):
+    stt = admin_edit_user(token, email_user, properties, value)
+    if stt == "Invalid Token":
+       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+
 
 @app.get("/api/payment_failed")
 def direct_to_homepage():
