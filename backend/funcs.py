@@ -56,49 +56,56 @@ def spam(token, targets, n_spam):
 def admin_edit_user(token, email_user, properties, value):
     decoded_token = validation_token(token)
     if decoded_token:
-        email = decoded_token["email"]
-        if email == "admin":
-            if properties == "first_name":
-                cursor.execute("UPDATE users set first_name = %s where email = %s", [value, email_user])
+        try:
+            email = decoded_token["email"]
+            if email == "admin":
+                if properties == "first_name":
+                    cursor.execute("UPDATE users set first_name = %s where email = %s", [value, email_user])
 
-            if properties == "last_name":
-                cursor.execute("UPDATE users set last_name = %s where email = %s", [value, email_user])
+                if properties == "last_name":
+                    cursor.execute("UPDATE users set last_name = %s where email = %s", [value, email_user])
 
-            if properties == "email":
-                cursor.execute("UPDATE users set email = %s where email = %s", [value, email_user])
+                if properties == "email":
+                    cursor.execute("UPDATE users set email = %s where email = %s", [value, email_user])
 
-            if properties == "amount":
-                cursor.execute("UPDATE users set amount = %s where email = %s", [value, email_user])
+                if properties == "amount":
+                    cursor.execute("UPDATE users set amount = %s where email = %s", [value, email_user])
 
-            if properties == "amount_total":
-                cursor.execute("UPDATE users set amount_total = %s where email = %s", [value, email_user])
-            
-            if properties == "request_remaining":
-                cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
-            
-            if properties == "delete":
-                cursor.execute("DELETE FROM users where email = %s", [email_user])
+                if properties == "amount_total":
+                    cursor.execute("UPDATE users set amount_total = %s where email = %s", [value, email_user])
+                
+                if properties == "request_remaining":
+                    cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
+                
+                if properties == "delete":
+                    cursor.execute("DELETE FROM users where email = %s", [email_user])
 
-            cnx.commit()
-            return "Successful"
+                cnx.commit()
+                return "Successful"
+        except Exception as err:
+            print(f"{bcolors.WARNING}{err}")
     else:
         return "Invalid Token"
 
 def signup(first_name, last_name, email, password):
     # Check email had axist
-    cursor.execute("SELECT * FROM users WHERE email = %s", [email])
+    try:
+        cursor.execute("SELECT * FROM users WHERE email = %s", [email])
 
-    if cursor.fetchone() is None:
-        # Store user info to database
-        sql = "INSERT INTO users (first_name, last_name, email, password, amount_total, amount, request_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        password = str(hashlib.md5(password.encode()).digest())
-        val = (first_name, last_name, email, password, 0, 0, 0)
-        cursor.execute(sql, val)
-        cnx.commit()
-        print(f"{bcolors.OKCYAN}Store user to database successfully!")
-        return 200
-    else:
-        print(f"{bcolors.WARNING}Email had exist, please chose other email!")
+        if cursor.fetchone() is None:
+            # Store user info to database
+            sql = "INSERT INTO users (first_name, last_name, email, password, amount_total, amount, request_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            password = str(hashlib.md5(password.encode()).digest())
+            val = (first_name, last_name, email, password, 0, 0, 0)
+            cursor.execute(sql, val)
+            cnx.commit()
+            print(f"{bcolors.OKCYAN}Store user to database successfully!")
+            return 200
+        else:
+            print(f"{bcolors.WARNING}Email had exist, please chose other email!")
+            return 400
+    except Exception as err:
+        print(f"{bcolors.WARNING}{err}")
         return 400
 
 def login(email, password):
@@ -109,7 +116,7 @@ def login(email, password):
         if password_encode == password_from_db:
             print(f"{bcolors.OKBLUE}Login Successfully!")
 
-            dt = int(time.time()) + (60 * 60 * 3)
+            dt = int(time.time()) + time_token_available
 
             payload_data = {
                 "email": email,
@@ -134,14 +141,18 @@ def login(email, password):
 def get_info_user(token):
     decoded_token = validation_token(token)
     if decoded_token:
-        email = decoded_token["email"]
-        cursor.execute("SELECT * FROM users WHERE email = %s", [email])
-        info = cursor.fetchall()[0]
-        info_final = {"first_name": info[0],
-                      "last_name": info[1],
-                      "amount": info[3],
-                      "request_remaning": info[5]}
-        return info_final
+        try:
+            email = decoded_token["email"]
+            cursor.execute("SELECT * FROM users WHERE email = %s", [email])
+            info = cursor.fetchall()[0]
+            info_final = {"first_name": info[0],
+                        "last_name": info[1],
+                        "amount": info[3],
+                        "request_remaning": info[5]}
+            return info_final
+        except Exception as err:
+            print(f"{bcolors.WARNING}{err}")
+            return "Invalid Token"
     else:
         print(f"{bcolors.WARNING}Invalid Token!")
         return "Invalid Token"
@@ -160,22 +171,25 @@ def recharge(token, amount):
     # VALIDATION
     decoded_token = validation_token(token)
     if decoded_token:
-        email = decoded_token["email"]
+        try:
+            email = decoded_token["email"]
 
-        # UPDATE AMOUNT
-        cursor.execute("SELECT amount FROM users WHERE email = %s", [email])
-        current_amount = cursor.fetchone()[0]
-        new_amount = current_amount + amount
-        cursor.execute("UPDATE users set amount = %s where email = %s", [new_amount, email])
+            # UPDATE AMOUNT
+            cursor.execute("SELECT amount FROM users WHERE email = %s", [email])
+            current_amount = cursor.fetchone()[0]
+            new_amount = current_amount + amount
+            cursor.execute("UPDATE users set amount = %s where email = %s", [new_amount, email])
 
-        # UPDATE AMOUNT TOTAL
-        cursor.execute("SELECT amount_total FROM users WHERE email = %s", [email])
-        current_amount_total = cursor.fetchone()[0]
-        new_amount_total = current_amount_total + amount
-        cursor.execute("UPDATE users set amount_total = %s where email = %s", [new_amount_total, email])
-        cnx.commit()
+            # UPDATE AMOUNT TOTAL
+            cursor.execute("SELECT amount_total FROM users WHERE email = %s", [email])
+            current_amount_total = cursor.fetchone()[0]
+            new_amount_total = current_amount_total + amount
+            cursor.execute("UPDATE users set amount_total = %s where email = %s", [new_amount_total, email])
+            cnx.commit()
 
-        print(f"{bcolors.OKCYAN}Recharged {amount}$ to {email} account!")
+            print(f"{bcolors.OKCYAN}Recharged {amount}$ to {email} account!")
+        except Exception as err:
+            print(f"{bcolors.WARNING}{err}")
     else:
         print(f"{bcolors.WARNING}Invalid Token")
 
@@ -183,29 +197,31 @@ def buy(token, package_name):
     decoded_token = validation_token(token)
 
     if decoded_token:
-        email = decoded_token["email"]
+        try:
+            email = decoded_token["email"]
 
-        cursor.execute("SELECT amount FROM users WHERE email = %s", [email])
-        amount = cursor.fetchone()[0]
+            cursor.execute("SELECT amount FROM users WHERE email = %s", [email])
+            amount = cursor.fetchone()[0]
 
-        if package[package_name][1] > amount:
-            print(f"{bcolors.WARNING}Not enough amount, please recharge to conntinue...")
-            return "Not enough"
+            if package[package_name][1] > amount:
+                print(f"{bcolors.WARNING}Not enough amount, please recharge to conntinue...")
+                return "Not enough"
 
-        else:
-            # Sub monney
-            amount_remaining = amount - package[package_name][1]
-            cursor.execute("UPDATE users set amount = %s where email = %s", [amount_remaining, email])
+            else:
+                # Sub monney
+                amount_remaining = amount - package[package_name][1]
+                cursor.execute("UPDATE users set amount = %s where email = %s", [amount_remaining, email])
 
-            cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
-            request_remaining = cursor.fetchone()[0]
-            request_current = request_remaining + package[package_name][0]
-            cursor.execute("UPDATE users set request_remaining= %s where email = %s", [request_current, email])
-            cnx.commit()
+                cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
+                request_remaining = cursor.fetchone()[0]
+                request_current = request_remaining + package[package_name][0]
+                cursor.execute("UPDATE users set request_remaining= %s where email = %s", [request_current, email])
+                cnx.commit()
 
-            print(f"{bcolors.OKBLUE}Successfully bought {package[package_name][0]} to account {email}")
-            return "Successfully"
-
+                print(f"{bcolors.OKBLUE}Successfully bought {package[package_name][0]} to account {email}")
+                return "Successfully"
+        except Exception as err:
+           print(f"{bcolors.WARNING}{err}") 
     else:
         print(f"{bcolors.WARNING}Invalid Token")
         return "Invalid Token" 
@@ -214,24 +230,27 @@ def change_password(token, old_password, new_password):
     decoded_token = validation_token(token)
 
     if decoded_token:
-        email = decoded_token["email"] 
+        try:
+            email = decoded_token["email"] 
 
-        cursor.execute("SELECT password FROM users WHERE email = %s", [email])
+            cursor.execute("SELECT password FROM users WHERE email = %s", [email])
 
-        old_password_endcode = str(hashlib.md5(old_password.encode()).digest()) 
+            old_password_endcode = str(hashlib.md5(old_password.encode()).digest()) 
 
-        password_from_database = cursor.fetchone()[0]
+            password_from_database = cursor.fetchone()[0]
 
-        if old_password_endcode == password_from_database:
-            new_password_endcode = str(hashlib.md5(new_password.encode()).digest())
-            cursor.execute("UPDATE users set password = %s where email = %s", [new_password_endcode, email])
-            cnx.commit()
+            if old_password_endcode == password_from_database:
+                new_password_endcode = str(hashlib.md5(new_password.encode()).digest())
+                cursor.execute("UPDATE users set password = %s where email = %s", [new_password_endcode, email])
+                cnx.commit()
 
-            print(f"{bcolors.OKCYAN}Password changed!")
+                print(f"{bcolors.OKCYAN}Password changed!")
 
-        else:
-            print(f"{bcolors.WARNING}Old password incorrect!")
-            return 400
+            else:
+                print(f"{bcolors.WARNING}Old password incorrect!")
+                return 400
+        except Exception as err:
+            print(f"{bcolors.WARNING}{err}")
     else:
         print(f"{bcolors.WARNING}Invalid Token")
         return 401

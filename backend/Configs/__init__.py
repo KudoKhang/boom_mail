@@ -5,6 +5,7 @@ import random
 secret_key = "devbyk"
 sendgrid_key = "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"
 time_sleep = 3
+time_token_available = 60 * 30
 
 package = {
     "normal": [1000, 20],
