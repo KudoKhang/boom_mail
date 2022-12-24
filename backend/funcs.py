@@ -56,56 +56,52 @@ def spam(token, targets, n_spam):
 def admin_edit_user(token, email_user, properties, value):
     decoded_token = validation_token(token)
     if decoded_token:
-        try:
-            email = decoded_token["email"]
-            if email == "admin":
-                if properties == "first_name":
-                    cursor.execute("UPDATE users set first_name = %s where email = %s", [value, email_user])
+        email = decoded_token["email"]
+        if email == 'admin':
+            if properties == "first_name":
+                cursor.execute("UPDATE users set first_name = %s where email = %s", [value, email_user])
 
-                if properties == "last_name":
-                    cursor.execute("UPDATE users set last_name = %s where email = %s", [value, email_user])
+            if properties == "last_name":
+                cursor.execute("UPDATE users set last_name = %s where email = %s", [value, email_user])
 
-                if properties == "email":
-                    cursor.execute("UPDATE users set email = %s where email = %s", [value, email_user])
+            if properties == "email":
+                cursor.execute("UPDATE users set email = %s where email = %s", [value, email_user])
 
-                if properties == "amount":
-                    cursor.execute("UPDATE users set amount = %s where email = %s", [value, email_user])
+            if properties == "amount":
+                cursor.execute("UPDATE users set amount = %s where email = %s", [value, email_user])
 
-                if properties == "amount_total":
-                    cursor.execute("UPDATE users set amount_total = %s where email = %s", [value, email_user])
-                
-                if properties == "request_remaining":
-                    cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
-                
-                if properties == "delete":
-                    cursor.execute("DELETE FROM users where email = %s", [email_user])
+            if properties == "amount_total":
+                cursor.execute("UPDATE users set amount_total = %s where email = %s", [value, email_user])
+            
+            if properties == "request_remaining":
+                cursor.execute("UPDATE users set request_remaining = %s where email = %s", [value, email_user])
+            
+            if properties == "delete":
+                cursor.execute("DELETE FROM users where email = %s", [email_user])
 
-                cnx.commit()
-                return "Successful"
-        except Exception as err:
-            print(f"{bcolors.WARNING}{err}")
+            cnx.commit()
+            return "Successful"
+        else:
+            return "Invalid Token"
     else:
         return "Invalid Token"
 
 def signup(first_name, last_name, email, password):
     # Check email had axist
-    try:
-        cursor.execute("SELECT * FROM users WHERE email = %s", [email])
+    cursor.execute("SELECT * FROM users WHERE email = %s", [email])
 
-        if cursor.fetchone() is None:
-            # Store user info to database
-            sql = "INSERT INTO users (first_name, last_name, email, password, amount_total, amount, request_remaining) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            password = str(hashlib.md5(password.encode()).digest())
-            val = (first_name, last_name, email, password, 0, 0, 0)
-            cursor.execute(sql, val)
-            cnx.commit()
-            print(f"{bcolors.OKCYAN}Store user to database successfully!")
-            return 200
-        else:
-            print(f"{bcolors.WARNING}Email had exist, please chose other email!")
-            return 400
-    except Exception as err:
-        print(f"{bcolors.WARNING}{err}")
+    print(cursor.fetchone())
+    if cursor.fetchone() is None:
+        # Store user info to database
+        sql = "INSERT INTO users (first_name, last_name, email, password, amount_total, amount, request_remaining, role) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        password = str(hashlib.md5(password.encode()).digest())
+        val = (first_name, last_name, email, password, 0, 0, 0, 0)
+        cursor.execute(sql, val)
+        cnx.commit()
+        print(f"{bcolors.OKCYAN}Store user to database successfully!")
+        return 200
+    else:
+        print(f"{bcolors.WARNING}Email had exist, please chose other email!")
         return 400
 
 def login(email, password):
@@ -256,15 +252,15 @@ def change_password(token, old_password, new_password):
         return 401
 
 if __name__ == '__main__':
-    # signup("khang", "nghia", "test3@gmail.com", "123123")
-    token = login("test@gmail.com", "123123")
+    # signup("khang", "nghia", "test@gmail.com", "123123")
+    token = login("admin", "123123")
     # change_password(token, "123123", "123123")
-    # spam(token, ["thanhchem.k39a2@gmail.com"], 15000)
+    # spam(token, ["thanhchem.k39a2@gmail.com"], 1)
     # print(get_info_user(token))
     # print(validation_token(token))
-    # logout(token)
     # recharge(token, 1000)
-    buy(token, "vip")
+    # buy(token, "vip")
+    admin_edit_user(token, "test@gmail.com", "last_name", "Nghia")
 
     # cursor.execute('SELECT * FROM users')
     # users = cursor.fetchall()
