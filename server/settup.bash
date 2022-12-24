@@ -48,6 +48,8 @@ CREATE DATABASE boomcheck;
 
 sudo mysql -u root -p boomcheck < boomcheck.sql
 
+ALTER TABLE boomcheck.users ADD role int;
+
 # FOLDER
 sudo chmod 777 /var/www/boomcheck 
 sudo chown -R ubuntu /var/www/boomcheck
