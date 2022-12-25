@@ -96,6 +96,15 @@ def edit_user(token: str, email_user: str, properties: str, value: str):
        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
 
 
+@app.get("/api/admin_get_all_user", status_code=200)
+def get_all_user(token: str):
+    stt = get_info_all_user(token)
+    if stt == "Invalid Token":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+    else:
+        return stt
+
+
 @app.get("/api/payment_failed")
 def direct_to_homepage():
     print("Failed!")
