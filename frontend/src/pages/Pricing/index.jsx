@@ -78,8 +78,8 @@ export default function Pricing() {
           Pricing
         </Typography>
         <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Bảng giá spam email. Nếu có thắc mắc hoặc cần tư vấn, vui lòng liên hệ trực tiếp với chủ
-          shop để được giải đáp.
+          Email spam price list. If you have any questions or need advice, please contact the shop
+          owner directly for answers.
         </Typography>
       </Container>
       {/* End hero unit */}

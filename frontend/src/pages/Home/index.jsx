@@ -38,8 +38,17 @@ export default function Home() {
   const { handleResponseMsg } = useHandleError();
   const [logEmails, setLogEmails] = useState([]);
   const [reqNumber, setReqNumber] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const { reloadUser } = useOutletContext();
+
+  const showLogEmails = () => {
+    try {
+      setTimeout(() => {
+        setLogEmails((prev) => [...prev, `Request: ${prev.length + 1} ... Done ✅`]);
+        setReqNumber((prev) => prev - 1);
+      }, 3000);
+    } catch {
+      //
+    }
+  };
 
   const transformEmails = (emails) => {
     return emails
@@ -95,10 +104,11 @@ export default function Home() {
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">
-            Dashboard
+            Welcome to Boom Mail 📨
           </Typo>
         </Grid>
       </Grid>
+      <Grid container spacing={2} />
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={6}>
           <Box

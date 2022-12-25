@@ -62,7 +62,7 @@ export default function Payment() {
                     id="input-amount"
                     name="PAYMENT_AMOUNT"
                     type="number"
-                    label="Số tiền cần nạp"
+                    label="How money do you want to recharge?"
                     required
                     fullWidth
                     onChange={onInputChange}
