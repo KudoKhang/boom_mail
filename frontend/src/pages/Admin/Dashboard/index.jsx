@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import AdminMenu from '../../../components/AdminMenu';
 import Table from '../../../components/Table';
+import { rows } from './helper';
 
 export default function Dashboard() {
   return (
@@ -12,7 +13,7 @@ export default function Dashboard() {
           <AdminMenu />
         </Grid>
         <Grid item sm={9}>
-          <Table />
+          <Table rows={rows} />
         </Grid>
       </Grid>
     </Container>
