@@ -153,6 +153,22 @@ def get_info_user(token):
         print(f"{bcolors.WARNING}Invalid Token!")
         return "Invalid Token"
 
+def get_info_all_user(token):
+    decoded_token = validation_token(token)
+    if decoded_token:
+        email = decoded_token["email"]
+        if email == 'admin':
+            cursor.execute('SELECT * FROM users')
+            users = cursor.fetchall()
+            return users
+        else:
+            print(f"{bcolors.WARNING}Invalid Token!")
+            return "Invalid Token"  
+    else:
+        print(f"{bcolors.WARNING}Invalid Token!")
+        return "Invalid Token" 
+
+
 def validation_token(token):
     try:
         decode_token = jwt.decode(token, secret_key, algorithms=['HS256'])
@@ -253,14 +269,15 @@ def change_password(token, old_password, new_password):
 
 if __name__ == '__main__':
     # signup("khang", "nghia", "test@gmail.com", "123123")
-    token = login("admin", "123123")
+    token = login("test@gmail.com", "123123")
     # change_password(token, "123123", "123123")
     # spam(token, ["thanhchem.k39a2@gmail.com"], 1)
     # print(get_info_user(token))
     # print(validation_token(token))
     # recharge(token, 1000)
     # buy(token, "vip")
-    admin_edit_user(token, "test@gmail.com", "last_name", "Nghia")
+    # admin_edit_user(token, "test@gmail.com", "last_name", "Nghia")
+    get_info_all_user(token)
 
     # cursor.execute('SELECT * FROM users')
     # users = cursor.fetchall()
