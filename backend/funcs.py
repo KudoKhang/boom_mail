@@ -180,6 +180,23 @@ def get_info_all_user(token):
         print(f"{bcolors.WARNING}Invalid Token!")
         return "Invalid Token" 
 
+def get_amount_total(token):
+    decoded_token = validation_token(token)
+    if decoded_token:
+        email = decoded_token["email"]
+        if email == 'admin': 
+            cursor.execute('SELECT amount_total FROM users')
+            amount_total = cursor.fetchall()
+            total = 0
+            for amount in amount_total:
+                total += amount[0]
+            return total
+        else:
+            print(f"{bcolors.WARNING}Invalid Token!")
+            return "Invalid Token"  
+    else:
+        print(f"{bcolors.WARNING}Invalid Token!")
+        return "Invalid Token"  
 
 def validation_token(token):
     try:
@@ -289,7 +306,8 @@ if __name__ == '__main__':
     # recharge(token, 1000)
     # buy(token, "vip")
     # admin_edit_user(token, "test@gmail.com", "last_name", "Nghia")
-    print(get_info_all_user(token))
+    # print(get_info_all_user(token))
+    get_amount_total(token)
 
     # cursor.execute('SELECT * FROM users')
     # users = cursor.fetchall()
