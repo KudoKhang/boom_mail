@@ -38,17 +38,8 @@ export default function Home() {
   const { handleResponseMsg } = useHandleError();
   const [logEmails, setLogEmails] = useState([]);
   const [reqNumber, setReqNumber] = useState(0);
-
-  const showLogEmails = () => {
-    try {
-      setTimeout(() => {
-        setLogEmails((prev) => [...prev, `Request: ${prev.length + 1} ... Done ✅`]);
-        setReqNumber((prev) => prev - 1);
-      }, 3000);
-    } catch {
-      //
-    }
-  };
+  const [loading, setLoading] = useState(false);
+  const { reloadUser } = useOutletContext();
 
   const transformEmails = (emails) => {
     return emails
@@ -83,7 +74,7 @@ export default function Home() {
   const showLogEmails = () => {
     try {
       setTimeout(() => {
-        setLogEmails((prev) => [...prev, `Request ${prev.length + 1}: ... done`]);
+        setLogEmails((prev) => [...prev, `Request ${prev.length + 1}: Spam Successfully Completed 💣`]);
         setReqNumber((prev) => prev - 1);
       }, 3000);
     } catch {
@@ -104,11 +95,10 @@ export default function Home() {
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">
-            Welcome to Boom Mail 📨
+            Welcome to Boom Mail 🤪
           </Typo>
         </Grid>
       </Grid>
-      <Grid container spacing={2} />
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={6}>
           <Box
@@ -152,9 +142,9 @@ export default function Home() {
             </Box>
           </Box>
           <Box>
-            <Typo>1. Enter list emails, 1 email per line</Typo>
-            <Typo>2. Enter number of requests</Typo>
-            <Typo>3. Click start</Typo>
+            <Typo>1️⃣ Enter list emails, one email per line</Typo>
+            <Typo>2️⃣ Enter number of requests</Typo>
+            <Typo>3️⃣ Click start 🦥</Typo>
           </Box>
         </Grid>
         <Grid item xs={6}>

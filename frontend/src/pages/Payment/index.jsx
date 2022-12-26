@@ -38,7 +38,7 @@ export default function Payment() {
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">
-            Payment
+            Payment 💸
           </Typo>
         </Grid>
         <Grid item xs={12}>
@@ -75,7 +75,7 @@ export default function Payment() {
               </Grid>
               <Button component="label" variant="contained" sx={{ my: 3 }} fullWidth>
                 <input hidden type="submit" name="PAYMENT_METHOD" value={PAYMENT_METHOD} />
-                Thực hiện
+                Enter
               </Button>
             </Box>
           </Box>
