@@ -1,3 +1,4 @@
+import { users } from '../pages/Admin/Dashboard/helper';
 import axiosIns from '../utils/axiosInstance';
 import { localCache } from '../utils/localStorage';
 
@@ -49,4 +50,11 @@ export const getAdmin = async () => {
 export const logoutAdmin = async () => {
   localCache.clearAdmin();
   return {};
+};
+
+export const getUsers = async () => {
+  // const token = localCache.getAdminToken();
+  // const { data } = await axiosIns.get('/admin_get_all_user', { params: { token } });
+  // return data;
+  return users;
 };

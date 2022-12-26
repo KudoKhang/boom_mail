@@ -55,7 +55,7 @@ export default function Login() {
             <Grid item xs={12}>
               <TextField
                 id="input-email"
-                type="email"
+                type="text"
                 label="Email"
                 name="email"
                 required

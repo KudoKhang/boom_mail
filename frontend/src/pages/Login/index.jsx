@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
+import Typo from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import loginImg from '../../imgs/login.png';
 import { Img } from '../../styles';
@@ -51,6 +52,9 @@ export default function Login() {
         }}
       >
         <Img src={loginImg} alt="logo login" width="auto" />
+        <Typo component="h1" variant="h2" align="center" color="text.primary">
+          Sign in
+        </Typo>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

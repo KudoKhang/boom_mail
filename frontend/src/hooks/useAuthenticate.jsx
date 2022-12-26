@@ -10,7 +10,7 @@ const { HOME, PAYMENT, PRICING, LOGIN } = URL;
 export function useAuthenticate() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { handleResponseMsg, handleUnauthorized } = useHandleError();
+  const { handleResponseMsg } = useHandleError();
 
   const reloadUser = async () => {
     try {
@@ -18,7 +18,6 @@ export function useAuthenticate() {
       localCache.setUser(user);
     } catch (error) {
       handleResponseMsg(error);
-      handleUnauthorized(error);
     }
   };
 

@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
+import Typo from '@mui/material/Typography';
 import { useFormData } from '../../hooks/useFormData';
 import { API_URL } from '../../config/constants';
 import { localCache } from '../../utils/localStorage';
@@ -35,12 +36,18 @@ export default function Payment() {
   return (
     <Container maxWidth="xs" sx={{ mt: 8 }}>
       <Grid container spacing={2}>
+        <Grid item xs={12} justifyContent="center">
+          <Typo component="h1" variant="h2" align="center" color="text.primary">
+            Payment
+          </Typo>
+        </Grid>
         <Grid item xs={12}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              mt: 4,
             }}
           >
             <Box component="form" action={TARGET_URL} sx={{ width: '100%' }} method="POST">
