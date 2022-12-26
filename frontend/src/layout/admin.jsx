@@ -4,8 +4,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import HeaderAdmin from '../components/HeaderAdmin';
 import Footer from '../components/Footer';
 import { Main, Section } from './styles';
+import { useAuthenticate } from '../hooks/useAuthenticate';
 
 export function LayoutAdmin() {
+  useAuthenticate();
+
   return (
     <>
       <CssBaseline />

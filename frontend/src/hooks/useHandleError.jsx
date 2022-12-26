@@ -8,7 +8,11 @@ export function useHandleError() {
   const { showError } = useAlert();
 
   const handleResponseMsg = (error) => {
-    showError(error?.response?.data?.message || error?.message);
+    if (error?.response?.status === 401) {
+      handleUnauthorized();
+    }
+
+    showError(error?.response?.data?.detail || error?.response?.data?.message || error?.message);
   };
 
   const handleUnauthorized = () => {

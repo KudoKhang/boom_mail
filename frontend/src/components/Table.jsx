@@ -18,7 +18,7 @@ const columns = [
   },
   {
     field: 'email',
-    headerName: 'Last name',
+    headerName: 'Email',
     width: 150,
     editable: true,
   },
@@ -26,12 +26,15 @@ const columns = [
     field: 'amount',
     headerName: 'Money',
     type: 'number',
+    min: 0,
     width: 110,
-    editable: false,
+    editable: true,
   },
   {
     field: 'amount_total',
-    headerName: 'Last name',
+    headerName: 'Total amount',
+    type: 'number',
+    min: 0,
     width: 150,
     editable: true,
   },
@@ -40,20 +43,23 @@ const columns = [
     field: 'request_remaning',
     headerName: 'Request remaning',
     type: 'number',
+    min: 0,
     width: 110,
-    editable: false,
+    editable: true,
   },
 ].map((item) => ({ ...item, sortable: false }));
 
 export default function Table({ rows }) {
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box sx={{ height: 650, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         disableSelectionOnClick
+        disableColumnMenu
+        editMode="row"
         experimentalFeatures={{ newEditingApi: true }}
       />
     </Box>

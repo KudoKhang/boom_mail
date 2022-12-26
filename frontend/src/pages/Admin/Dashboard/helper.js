@@ -1,4 +1,4 @@
-export const rows = [
+export const users = [
   {
     id: 1,
     last_name: 'Snow',
