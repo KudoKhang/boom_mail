@@ -21,15 +21,15 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 3,
+        py: 1,
         px: 2,
         mt: 'auto',
         backgroundColor: (theme) =>
-          theme.palette.mode === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+          theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[800],
       }}
     >
       <Container maxWidth="sm">
-        <Typography variant="body1">Cung cấp dịch vụ BoomMail, CheckCCV, CheckMailLive.</Typography>
+        <Typography variant="body1">You have problems, we have solved them. Contact for work 💌 Telegram</Typography>
         <Copyright />
       </Container>
     </Box>

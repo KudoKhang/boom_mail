@@ -27,14 +27,14 @@ const tiers = [
     title: 'Vip',
     subheader: 'Most popular',
     price: '80',
-    description: ['5.000 request spam', 'Help center access', 'Phone & email support'],
+    description: ['5.000 request spam', 'Save 20% money', 'Phone & email support'],
     text: 'Buy',
     value: 'vip',
   },
   {
     title: 'Pro',
     price: '130',
-    description: ['10.000 request spam', 'Help center access', 'Phone & email support'],
+    description: ['10.000 request spam', 'Save 35% money', 'Phone & email support'],
     text: 'Buy',
     value: 'pro',
   },
@@ -78,8 +78,8 @@ export default function Pricing() {
           Pricing
         </Typography>
         <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Bảng giá spam email. Nếu có thắc mắc hoặc cần tư vấn, vui lòng liên hệ trực tiếp với chủ
-          shop để được giải đáp.
+          Email spam price list. If you have any questions or need advice, please contact the shop
+          owner directly for answers.
         </Typography>
       </Container>
       {/* End hero unit */}

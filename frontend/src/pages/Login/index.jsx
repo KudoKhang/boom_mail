@@ -52,9 +52,6 @@ export default function Login() {
         }}
       >
         <Img src={loginImg} alt="logo login" width="auto" />
-        <Typo component="h1" variant="h2" align="center" color="text.primary">
-          Sign in
-        </Typo>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -71,7 +68,7 @@ export default function Login() {
             <Grid item xs={12}>
               <TextField
                 id="input-password"
-                label="Mật khẩu"
+                label="Password"
                 type="password"
                 name="password"
                 required
@@ -81,12 +78,12 @@ export default function Login() {
             </Grid>
           </Grid>
           <Button type="submit" variant="contained" sx={{ my: 3 }} fullWidth>
-            Đăng nhập
+            Login
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href={URL.SIGNUP} variant="body2">
-                Bạn chưa có tài khoản? Đăng kí
+                Don't have an account yet? Sign Up
               </Link>
             </Grid>
           </Grid>
