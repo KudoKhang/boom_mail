@@ -2,8 +2,8 @@ import mysql.connector
 
 try:
     config = {
-        'user': 'default',
-        'password': 'secret',
+        'user': 'root',
+        # 'password': 'secret',
         'host': '127.0.0.1',
         'port': '3306',
         'database': 'boomcheck',

@@ -104,6 +104,14 @@ def get_all_user(token: str):
     else:
         return stt
 
+@app.get("/api/admin_get_amount_total", status_code=200)
+def admin_get_amount_total(token: str):
+    stt = get_amount_total(token)
+    if stt == "Invalid Token":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+    else:
+        return stt
+
 
 @app.get("/api/payment_failed")
 def direct_to_homepage():
