@@ -5,13 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typo from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_URL } from '../../config/constants';
-import { localCache } from '../../utils/localStorage';
 import { logoutAdmin } from '../../api';
 import AccountMenu from './AccountMenu';
 
-export default function Header() {
+export default function Header({ user }) {
   const navigate = useNavigate();
-  const user = localCache.getAdmin();
 
   const logout = async () => {
     await logoutAdmin();

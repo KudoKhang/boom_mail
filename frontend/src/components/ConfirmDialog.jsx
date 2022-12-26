@@ -13,14 +13,18 @@ export default function ConfirmDialog({ open, title, content = '', handleConfirm
       onClose={handleCancel}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      maxWidth="xs"
+      fullWidth
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleConfirm} autoFocus>
+        <Button variant="outlined" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={handleConfirm} autoFocus>
           Submit
         </Button>
       </DialogActions>

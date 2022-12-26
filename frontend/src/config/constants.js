@@ -4,6 +4,7 @@ export const URL = {
   LOGIN: '/login',
   PRICING: '/pricing',
   PAYMENT: '/payment',
+  PROFILE: '/profile',
 };
 
 export const API_URL = process.env.REACT_APP_API_URL;

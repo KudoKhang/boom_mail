@@ -34,7 +34,7 @@ export default function Payment() {
   const getNoPaymentUrl = () => `${API_URL}/payment_failed`;
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
+    <Container maxWidth="xs" sx={{ my: 8 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">

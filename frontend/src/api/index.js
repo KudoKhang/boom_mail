@@ -1,4 +1,3 @@
-import { users } from '../pages/Admin/Dashboard/helper';
 import axiosIns from '../utils/axiosInstance';
 import { localCache } from '../utils/localStorage';
 
@@ -40,6 +39,12 @@ export const buyPackage = async (name) => {
   return data;
 };
 
+export const changePassword = async (payload) => {
+  const token = localCache.getUserToken();
+  const { data } = await axiosIns.post('/changepassword', {}, { params: { token, ...payload } });
+  return data;
+};
+
 // admin
 export const getAdmin = async () => {
   const token = localCache.getAdminToken();
@@ -53,8 +58,19 @@ export const logoutAdmin = async () => {
 };
 
 export const getUsers = async () => {
-  // const token = localCache.getAdminToken();
-  // const { data } = await axiosIns.get('/admin_get_all_user', { params: { token } });
-  // return data;
-  return users;
+  const token = localCache.getAdminToken();
+  const { data } = await axiosIns.get('/admin_get_all_user', { params: { token } });
+  return data;
+};
+
+export const getTotalAmountByAd = async () => {
+  const token = localCache.getAdminToken();
+  const { data } = await axiosIns.get('/admin_get_amount_total', { params: { token } });
+  return data;
+};
+
+export const updateUser = async (payload) => {
+  const token = localCache.getAdminToken();
+  const { data } = await axiosIns.post('/admin_edit', {}, { params: { token, ...payload } });
+  return data;
 };

@@ -35,7 +35,7 @@ const colors = [
 
 export default function Home() {
   const { formData, onInputChange } = useFormData();
-  const { handleResponseMsg } = useHandleError();
+  const { handleResponseMsg, handleUnauthorized } = useHandleError();
   const [logEmails, setLogEmails] = useState([]);
   const [reqNumber, setReqNumber] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -68,6 +68,7 @@ export default function Home() {
       await reloadUser();
     } catch (error) {
       handleResponseMsg(error);
+      handleUnauthorized(error);
     }
   };
 
@@ -91,7 +92,7 @@ export default function Home() {
   }, [reqNumber]);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 8 }}>
+    <Container maxWidth="md" sx={{ my: 8 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">

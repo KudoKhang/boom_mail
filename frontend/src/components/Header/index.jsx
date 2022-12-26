@@ -6,13 +6,11 @@ import Typo from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../config/constants';
-import { localCache } from '../../utils/localStorage';
 import { logoutUser } from '../../api';
 import AccountMenu from './AccountMenu';
 
-export default function Header() {
+export default function Header({ user }) {
   const navigate = useNavigate();
-  const user = localCache.getUser();
 
   const logout = async () => {
     await logoutUser();
