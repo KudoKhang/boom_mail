@@ -3,6 +3,7 @@ import jwt
 
 import time
 
+import requests
 import random
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -52,6 +53,53 @@ def spam(token, targets, n_spam):
     else:
         print(f"{bcolors.WARNING}Invalid Token")
         return 401
+
+def spam_mailgun(token, targets, n_spam):
+    # Check request_remaning
+    decoded_token = validation_token(token)
+
+    if decoded_token:
+        email = decoded_token["email"]
+        cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
+        request_remaining = cursor.fetchone()[0]
+
+        if n_spam <= request_remaining:
+            # Update request_remaning
+            new_request_remaining = request_remaining - (n_spam * len(targets))
+            cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
+            cnx.commit()
+
+            # Spam email to targets
+            try:
+                target = [(t, random.choice(names)) for t in targets]
+
+                for spam in range(n_spam):
+                    subject = random.choice(subjects) + str(random.randint(1000, 100000))
+                    content = random.choice(contents) + " " + str(random.randint(100000, 999999))
+
+                    response = requests.post("https://api.mailgun.net/v3/boomcheck.io/messages",
+                    auth=("api", mailgun_key),
+                    data={"from": f"{random.choice(names)} <{random.choice(bots)}>",
+                        "to": target,
+                        "subject": subject,
+                        "text": content})
+                    if response.status_code == 200:
+                        print(f"{bcolors.OKGREEN} Successful")
+                    time.sleep(time_sleep)
+            except Exception as err:
+                print(err)
+
+            print(f"{bcolors.OKBLUE}\nSuccessful sent {n_spam * len(targets)} email spam to {len(targets)} targets!")
+            return 200
+
+        else:
+            print(f"{bcolors.WARNING}Not enough resquest!")
+            return 403
+    else:
+        print(f"{bcolors.WARNING}Invalid Token")
+        return 401
+
+
 
 def admin_edit_user(token, email_user, properties, value):
     decoded_token = validation_token(token)

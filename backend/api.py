@@ -82,7 +82,8 @@ def buy_request(token, package_name):
 
 @app.post("/api/spam", status_code=200)
 async def start_spam(token: str, targets: List, n_spam: int):
-    stt = spam(token, targets, int(n_spam))
+    # stt = spam(token, targets, int(n_spam))
+    stt = spam_mailgun(token, targets, int(n_spam))
     if stt == 401:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
     elif stt == 403:
