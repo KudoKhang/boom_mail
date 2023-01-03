@@ -26,7 +26,7 @@ export default function SignUp() {
     try {
       await SignupApi(formData);
       navigate(URL.LOGIN, { replace: true });
-      showSuccess('Đăng kí thành công!');
+      showSuccess('Sign up successful');
     } catch (error) {
       showError(error?.response?.data?.message || error?.message);
     }

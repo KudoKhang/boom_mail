@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { URL } from '../../config/constants';
 import { logoutUser } from '../../api';
 import AccountMenu from './AccountMenu';
+import { Img } from '../../styles';
+import logo from '../../imgs/logo.png';
 
 export default function Header({ user }) {
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ export default function Header({ user }) {
           <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
             Boom mail
           </Link>
-          <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
+          <Link variant="button" href={URL.CCV} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
             Check CCV
           </Link>
           <Link variant="button" href={URL.PRICING} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
@@ -79,9 +81,9 @@ export default function Header({ user }) {
       }}
     >
       <Toolbar sx={{ flexWrap: 'wrap' }}>
-        <Typo variant="span" sx={{ flexGrow: 3 }}>
-          BoomCheck
-        </Typo>
+        <Link variant="button" href={URL.HOME} sx={{ m: 0, p: 0, flexGrow: 3 }}>
+          <Img src={logo} alt="logo app" sx={{ width: '150px' }} />
+        </Link>
         {showMenu()}
       </Toolbar>
     </AppBar>

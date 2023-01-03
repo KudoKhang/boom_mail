@@ -54,7 +54,7 @@ export default function Login() {
       >
         <Img src={loginImg} alt="logo login" width="auto" />
         <Typo component="h1" variant="h2" align="center" color="text.primary" sx={{ mt: 2 }}>
-          Administrator sign in
+          Administrator
         </Typo>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>

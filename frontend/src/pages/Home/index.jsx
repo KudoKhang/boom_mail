@@ -12,6 +12,8 @@ import { useFormData } from '../../hooks/useFormData';
 import { addMailsApi } from '../../api';
 import { localCache } from '../../utils/localStorage';
 import { useHandleError } from '../../hooks/useHandleError';
+import { SPAM_INTERVAL } from '../../config/constants';
+import { useAlert } from '../../contexts/alert';
 
 const colors = [
   'red',
@@ -40,6 +42,8 @@ export default function Home() {
   const [reqNumber, setReqNumber] = useState(0);
   const [loading, setLoading] = useState(false);
   const { reloadUser } = useOutletContext();
+  const { showSuccess, showError } = useAlert();
+  const [total, setTotal] = useState(0);
 
   const transformEmails = (emails) => {
     return emails
@@ -64,6 +68,7 @@ export default function Home() {
         throw new Error('Emails invalid');
       }
       setReqNumber(number * list.length);
+      setTotal(number * list.length);
       await addMailsApi({ token, n_spam: number }, list);
       await reloadUser();
     } catch (error) {
@@ -80,14 +85,18 @@ export default function Home() {
           `Request ${prev.length + 1}: Spam Successfully Completed 💣`,
         ]);
         setReqNumber((prev) => prev - 1);
-      }, 3000);
+      }, SPAM_INTERVAL);
     } catch {
-      //
+      showError('Something went wrong');
     }
   };
 
   useEffect(() => {
     if (!reqNumber) {
+      if (loading) {
+        showSuccess(`Spam successful: ${total} emails`);
+        setTotal(0);
+      }
       setLoading(false);
       return;
     }
@@ -99,7 +108,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ my: 8 }}>
+    <Container maxWidth="xl" sx={{ my: 8 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">
@@ -149,10 +158,18 @@ export default function Home() {
               </Button>
             </Box>
           </Box>
-          <Box>
-            <Typo>1️⃣ Enter list emails, one email per line</Typo>
-            <Typo>2️⃣ Enter number of requests</Typo>
-            <Typo>3️⃣ Click start 🦥</Typo>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Box fullWidth>
+              <Typo>1️⃣ Enter list emails, one email per line</Typo>
+              <Typo>2️⃣ Enter number of requests</Typo>
+              <Typo>3️⃣ Click start 🦥</Typo>
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={6}>
@@ -162,7 +179,8 @@ export default function Home() {
               borderColor: 'grey.400',
               padding: '16.5px 14px',
               borderRadius: '4px',
-              minHeight: '289px',
+              height: '289px',
+              overflow: 'auto',
             }}
           >
             {logEmails.map((mail) => (
