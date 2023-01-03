@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -32,6 +32,10 @@ export default function Payment() {
 
   const getPaymentUrl = () => `${API_URL}/payment?token=${localCache.getUserToken()}`;
   const getNoPaymentUrl = () => `${API_URL}/payment_failed`;
+
+  useEffect(() => {
+    document.title = 'Payment';
+  }, []);
 
   return (
     <Container maxWidth="xs" sx={{ my: 8 }}>

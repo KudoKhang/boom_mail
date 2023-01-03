@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -68,6 +68,10 @@ export default function Pricing() {
     setOpenConfirmPopup(false);
     setSelectedItem({});
   };
+
+  useEffect(() => {
+    document.title = 'Pricing';
+  }, []);
 
   return (
     <>

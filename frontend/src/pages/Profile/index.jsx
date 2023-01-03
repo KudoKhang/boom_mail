@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -37,6 +37,10 @@ export default function Profile() {
       handleResponseMsg(error);
     }
   };
+
+  useEffect(() => {
+    document.title = 'Profile';
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">

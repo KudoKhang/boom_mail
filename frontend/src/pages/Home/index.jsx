@@ -75,7 +75,10 @@ export default function Home() {
   const showLogEmails = () => {
     try {
       setTimeout(() => {
-        setLogEmails((prev) => [...prev, `Request ${prev.length + 1}: Spam Successfully Completed 💣`]);
+        setLogEmails((prev) => [
+          ...prev,
+          `Request ${prev.length + 1}: Spam Successfully Completed 💣`,
+        ]);
         setReqNumber((prev) => prev - 1);
       }, 3000);
     } catch {
@@ -90,6 +93,10 @@ export default function Home() {
     }
     showLogEmails();
   }, [reqNumber]);
+
+  useEffect(() => {
+    document.title = 'Home';
+  }, []);
 
   return (
     <Container maxWidth="md" sx={{ my: 8 }}>

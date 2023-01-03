@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -31,6 +31,10 @@ export default function SignUp() {
       showError(error?.response?.data?.message || error?.message);
     }
   };
+
+  useEffect(() => {
+    document.title = 'Sign up';
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">

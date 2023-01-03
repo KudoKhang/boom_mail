@@ -16,6 +16,7 @@ export default function Dashboard() {
   const { showSuccess } = useAlert();
 
   useEffect(() => {
+    document.title = 'Dashboard';
     (async () => {
       try {
         const total = await getTotalAmountByAd();

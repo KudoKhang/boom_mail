@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -37,6 +37,10 @@ export default function Login() {
       handleResponseMsg(error);
     }
   };
+
+  useEffect(() => {
+    document.title = 'Login';
+  }, []);
 
   return (
     <Container maxWidth="xs" sx={{ mt: 8 }}>
