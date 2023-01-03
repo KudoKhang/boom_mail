@@ -4,17 +4,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 import HeaderAdmin from '../components/HeaderAdmin';
 import Footer from '../components/Footer';
 import { Main, Section } from './styles';
-import { useAuthenticate } from '../hooks/useAuthenticate';
+import { useAdminAuthenticate } from '../hooks/useAdminAuthenticate';
 
 export function LayoutAdmin() {
-  useAuthenticate();
+  const { user } = useAdminAuthenticate();
 
   return (
     <>
       <CssBaseline />
       <Main maxWidth={false}>
         <Section>
-          <HeaderAdmin />
+          <HeaderAdmin user={user} />
           <Outlet />
         </Section>
         <Footer />

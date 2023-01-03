@@ -2,38 +2,44 @@ import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
-import { URL } from '../../config/constants';
-import { SignupApi } from '../../api';
+import { useOutletContext } from 'react-router-dom';
+import { changePassword } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { useAlert } from '../../contexts/alert';
+import { useHandleError } from '../../hooks/useHandleError';
 
-export default function SignUp() {
-  const { formData, onInputChange } = useFormData();
-  const navigate = useNavigate();
+export default function Profile() {
+  const { formData, onInputChange, resetForm } = useFormData();
   const { showSuccess, showError } = useAlert();
+  const { handleResponseMsg, handleUnauthorized } = useHandleError();
+  const { user } = useOutletContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await SignupApi(formData);
-      navigate(URL.LOGIN, { replace: true });
-      showSuccess('Đăng kí thành công!');
+      const { new_password: newPass, password_confirmation: confirmPass } = formData;
+
+      if (newPass !== confirmPass) {
+        showError('New password and password confirmation does not match');
+        return;
+      }
+
+      await changePassword(formData);
+      resetForm();
+      showSuccess('Change password successful');
     } catch (error) {
-      showError(error?.response?.data?.message || error?.message);
+      handleUnauthorized(error);
+      handleResponseMsg(error);
     }
   };
 
   useEffect(() => {
-    document.title = 'Sign up';
+    document.title = 'Profile';
   }, []);
 
   return (
@@ -50,7 +56,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Profile
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -58,64 +64,79 @@ export default function SignUp() {
               <TextField
                 autoComplete="given-name"
                 name="first_name"
-                required
                 fullWidth
                 id="first_name"
                 label="First Name"
-                autoFocus
-                onChange={onInputChange}
+                value={user?.first_name || ''}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                required
                 fullWidth
                 id="last_name"
                 label="Last Name"
                 name="last_name"
-                autoComplete="family-name"
-                onChange={onInputChange}
+                value={user?.last_name || ''}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
-                onChange={onInputChange}
+                value={user?.email || ''}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                name="password"
-                label="Password"
+                name="old_password"
+                label="Current password"
                 type="password"
-                id="password"
+                id="current-password"
                 onChange={onInputChange}
+                value={formData?.old_password || ''}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+              <TextField
+                required
+                fullWidth
+                name="new_password"
+                label="New password"
+                type="password"
+                id="new-password"
+                onChange={onInputChange}
+                value={formData?.new_password || ''}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password_confirmation"
+                label="Re-enter password"
+                type="password"
+                id="password-confirmation"
+                onChange={onInputChange}
+                value={formData?.password_confirmation || ''}
               />
             </Grid>
           </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ my: 3 }}>
-            Sign Up
+            Update
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href={URL.LOGIN} variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>

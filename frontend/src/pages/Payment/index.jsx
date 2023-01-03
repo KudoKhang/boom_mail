@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -33,8 +33,12 @@ export default function Payment() {
   const getPaymentUrl = () => `${API_URL}/payment?token=${localCache.getUserToken()}`;
   const getNoPaymentUrl = () => `${API_URL}/payment_failed`;
 
+  useEffect(() => {
+    document.title = 'Payment';
+  }, []);
+
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
+    <Container maxWidth="xs" sx={{ my: 8 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">

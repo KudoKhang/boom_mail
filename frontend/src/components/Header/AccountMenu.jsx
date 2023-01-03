@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,9 +9,11 @@ import Logout from '@mui/icons-material/Logout';
 import Typo from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
+import Link from '@mui/material/Link';
+import { URL } from '../../config/constants';
 
 export default function AccountMenu({ logout, user }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -80,6 +82,11 @@ export default function AccountMenu({ logout, user }) {
         <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typo variant="span">Remaning requests: </Typo>
           <Typo variant="h6">{`${remaning || 0}`}</Typo>
+        </MenuItem>
+        <MenuItem>
+          <Link variant="link" href={URL.PROFILE}>
+            Profile
+          </Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={logout}>

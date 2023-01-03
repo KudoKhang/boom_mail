@@ -7,15 +7,15 @@ import { Main, Section } from './styles';
 import { useAuthenticate } from '../hooks/useAuthenticate';
 
 export function LayoutUser() {
-  const { reloadUser } = useAuthenticate();
+  const { reloadUser, user } = useAuthenticate();
 
   return (
     <>
       <CssBaseline />
       <Main maxWidth={false}>
         <Section>
-          <Header />
-          <Outlet context={{ reloadUser }} />
+          <Header user={user} />
+          <Outlet context={{ reloadUser, user }} />
         </Section>
         <Footer />
       </Main>

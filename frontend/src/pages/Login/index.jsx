@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import Typo from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import loginImg from '../../imgs/login.png';
 import { Img } from '../../styles';
 import { URL } from '../../config/constants';
-import { getUser, LoginApi } from '../../api';
+import { LoginApi } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { localCache } from '../../utils/localStorage';
 import { useAlert } from '../../contexts/alert';
@@ -33,19 +32,21 @@ export default function Login() {
       }
 
       localCache.setUserToken(token);
-      const user = await getUser();
-      localCache.setUser(user);
       navigate(URL.HOME, { replace: true });
     } catch (error) {
       handleResponseMsg(error);
     }
   };
 
+  useEffect(() => {
+    document.title = 'Login';
+  }, []);
+
   return (
     <Container maxWidth="xs" sx={{ mt: 8 }}>
       <Box
         sx={{
-          marginTop: 8,
+          my: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -83,7 +84,7 @@ export default function Login() {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href={URL.SIGNUP} variant="body2">
-                Don't have an account yet? Sign Up
+                Don&apos;t have an account yet? Sign Up
               </Link>
             </Grid>
           </Grid>

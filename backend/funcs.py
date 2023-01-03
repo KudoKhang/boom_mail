@@ -144,7 +144,9 @@ def get_info_user(token):
             info_final = {"first_name": info[0],
                         "last_name": info[1],
                         "amount": info[3],
-                        "request_remaning": info[5]}
+                        "request_remaning": info[5],
+                        "email": email,
+                        }
             return info_final
         except Exception as err:
             print(f"{bcolors.WARNING}{err}")

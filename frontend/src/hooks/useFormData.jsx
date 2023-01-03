@@ -10,8 +10,13 @@ export const useFormData = (defaultState = {}) => {
     });
   };
 
+  const resetForm = () => {
+    setFormData({});
+  };
+
   return {
     formData,
     onInputChange,
+    resetForm,
   };
 };

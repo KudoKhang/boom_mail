@@ -35,7 +35,7 @@ const colors = [
 
 export default function Home() {
   const { formData, onInputChange } = useFormData();
-  const { handleResponseMsg } = useHandleError();
+  const { handleResponseMsg, handleUnauthorized } = useHandleError();
   const [logEmails, setLogEmails] = useState([]);
   const [reqNumber, setReqNumber] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -68,13 +68,17 @@ export default function Home() {
       await reloadUser();
     } catch (error) {
       handleResponseMsg(error);
+      handleUnauthorized(error);
     }
   };
 
   const showLogEmails = () => {
     try {
       setTimeout(() => {
-        setLogEmails((prev) => [...prev, `Request ${prev.length + 1}: Spam Successfully Completed 💣`]);
+        setLogEmails((prev) => [
+          ...prev,
+          `Request ${prev.length + 1}: Spam Successfully Completed 💣`,
+        ]);
         setReqNumber((prev) => prev - 1);
       }, 3000);
     } catch {
@@ -90,8 +94,12 @@ export default function Home() {
     showLogEmails();
   }, [reqNumber]);
 
+  useEffect(() => {
+    document.title = 'Home';
+  }, []);
+
   return (
-    <Container maxWidth="md" sx={{ mt: 8 }}>
+    <Container maxWidth="md" sx={{ my: 8 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">
