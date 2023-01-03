@@ -11,10 +11,12 @@ const Home = lazy(() => import('./pages/Home'));
 const Payment = lazy(() => import('./pages/Payment'));
 const Profile = lazy(() => import('./pages/Profile'));
 const PageCCV = lazy(() => import('./pages/CCV'));
+const Tutorial = lazy(() => import('./pages/Tutorial'));
+
 const AdminLogin = lazy(() => import('./pages/Admin/Login'));
 const AdminDashboard = lazy(() => import('./pages/Admin/Dashboard'));
 
-const { HOME, PRICING, LOGIN, SIGNUP, PAYMENT, PROFILE, CCV } = URL;
+const { HOME, PRICING, LOGIN, SIGNUP, PAYMENT, PROFILE, CCV, TUTORIAL } = URL;
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: CCV,
         element: <PageCCV />,
+      },
+      {
+        path: TUTORIAL,
+        element: <Tutorial />,
       },
     ],
   },
