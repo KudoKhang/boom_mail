@@ -35,7 +35,10 @@ export function useAuthenticate() {
       return;
     }
 
-    if (![BASE, HOME, PAYMENT, PRICING, PROFILE].includes(location?.pathname)) return;
+    if (![BASE, HOME, PAYMENT, PRICING, PROFILE].includes(location?.pathname)) {
+      setUser(localCache.getUser());
+      return;
+    }
 
     (async () => {
       await reloadUser();

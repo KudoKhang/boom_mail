@@ -6,6 +6,7 @@ export const URL = {
   PRICING: '/pricing',
   PAYMENT: '/payment',
   PROFILE: '/profile',
+  CCV: '/ccv',
 };
 
 export const API_URL = process.env.REACT_APP_API_URL;
@@ -16,3 +17,5 @@ export const ADMIN_URL = {
   LOGIN: '/admin/login',
   HOME: '/admin/dashboard',
 };
+
+export const SPAM_INTERVAL = 1000; // time

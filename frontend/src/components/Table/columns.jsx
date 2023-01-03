@@ -18,6 +18,7 @@ export const useColumns = ({ openPopupDelete }) => {
       field: 'email',
       headerName: 'Email',
       editable: true,
+      width: 180,
     },
     {
       field: 'amount',

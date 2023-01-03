@@ -80,7 +80,7 @@ export default function AccountMenu({ logout, user }) {
           <Typo variant="h6">{`$${amount || 0}`}</Typo>
         </MenuItem>
         <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typo variant="span">Remaning requests: </Typo>
+          <Typo variant="span">Requests: </Typo>
           <Typo variant="h6">{`${remaning || 0}`}</Typo>
         </MenuItem>
         <MenuItem>
