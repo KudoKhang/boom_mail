@@ -5,7 +5,7 @@ import { URL } from '../config/constants';
 import { localCache } from '../utils/localStorage';
 import { useHandleError } from './useHandleError';
 
-const { HOME, PAYMENT, PRICING, LOGIN, PROFILE } = URL;
+const { HOME, PAYMENT, PRICING, LOGIN, PROFILE, BASE } = URL;
 
 export function useAuthenticate() {
   const location = useLocation();
@@ -35,7 +35,7 @@ export function useAuthenticate() {
       return;
     }
 
-    if (![HOME, PAYMENT, PRICING, PROFILE].includes(location?.pathname)) return;
+    if (![BASE, HOME, PAYMENT, PRICING, PROFILE].includes(location?.pathname)) return;
 
     (async () => {
       await reloadUser();

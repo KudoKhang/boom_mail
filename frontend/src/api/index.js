@@ -45,13 +45,6 @@ export const changePassword = async (payload) => {
   return data;
 };
 
-// admin
-export const getAdmin = async () => {
-  const token = localCache.getAdminToken();
-  const { data } = await axiosIns.post('/user', {}, { params: { token } });
-  return data;
-};
-
 export const logoutAdmin = async () => {
   localCache.clearAdmin();
   return {};
