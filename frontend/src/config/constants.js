@@ -7,6 +7,7 @@ export const URL = {
   PAYMENT: '/payment',
   PROFILE: '/profile',
   CCV: '/ccv',
+  TUTORIAL: '/tutorial',
 };
 
 export const API_URL = process.env.REACT_APP_API_URL;
@@ -19,3 +20,5 @@ export const ADMIN_URL = {
 };
 
 export const SPAM_INTERVAL = 1000; // time
+
+export const TUTORIAL_URL = process.env.REACT_APP_TUTORIAL_URL;

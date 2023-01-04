@@ -44,6 +44,9 @@ export default function Header({ user }) {
     return (
       <>
         <nav>
+          <Link variant="button" href={URL.TUTORIAL} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
+            Tutorial
+          </Link>
           <Link variant="button" href={URL.HOME} sx={{ my: 1, mx: 1.5, color: 'common.white' }}>
             Boom mail
           </Link>

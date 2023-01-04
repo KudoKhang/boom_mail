@@ -108,7 +108,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Container maxWidth="xl" sx={{ my: 8 }}>
+    <Container maxWidth="lg" sx={{ my: 8 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} justifyContent="center">
           <Typo component="h1" variant="h2" align="center" color="text.primary">
@@ -116,13 +116,12 @@ export default function Home() {
           </Typo>
         </Grid>
       </Grid>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item xs={6}>
+      <Grid container spacing={2} sx={{ mt: 2, justifyContent: 'center' }}>
+        <Grid item xs={6} md={5}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
             }}
           >
             <Box component="form" onSubmit={handleSubmit}>
@@ -158,21 +157,13 @@ export default function Home() {
               </Button>
             </Box>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Box fullWidth>
-              <Typo>1️⃣ Enter list emails, one email per line</Typo>
-              <Typo>2️⃣ Enter number of requests</Typo>
-              <Typo>3️⃣ Click start 🦥</Typo>
-            </Box>
+          <Box>
+            <Typo>1️⃣ Enter list emails, one email per line</Typo>
+            <Typo>2️⃣ Enter number of requests</Typo>
+            <Typo>3️⃣ Click start 🦥</Typo>
           </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} md={5}>
           <Box
             sx={{
               border: '1px solid',

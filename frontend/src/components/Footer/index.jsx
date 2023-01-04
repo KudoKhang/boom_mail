@@ -18,20 +18,27 @@ function Copyright() {
 
 export default function Footer() {
   return (
-    <Box
+    <Container
       component="footer"
+      maxWidth="xl"
       sx={{
-        py: 1,
-        px: 2,
+        py: 2,
+        px: 4,
         mt: 'auto',
         backgroundColor: (theme) =>
           theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[800],
       }}
     >
-      <Container maxWidth="sm">
-        <Typography variant="body1">You have problems, we have solved them. Contact for work 💌 Telegram</Typography>
+      <Box
+        sx={{
+          textAlign: 'right',
+        }}
+      >
+        <Typography variant="body1">
+          You have problems, we have solved them. Contact for work 💌 Telegram
+        </Typography>
         <Copyright />
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   );
 }
