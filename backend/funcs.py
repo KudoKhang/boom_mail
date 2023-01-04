@@ -99,8 +99,6 @@ def spam_mailgun(token, targets, n_spam):
         print(f"{bcolors.WARNING}Invalid Token")
         return 401
 
-
-
 def admin_edit_user(token, email_user, properties, value):
     decoded_token = validation_token(token)
     if decoded_token:
@@ -135,11 +133,7 @@ def admin_edit_user(token, email_user, properties, value):
         return "Invalid Token"
 
 def signup(first_name, last_name, email, password):
-    # Check email had axist
-    cursor.execute("SELECT * FROM users WHERE email = %s", [email])
-
-    print(cursor.fetchone())
-    if cursor.fetchone() is None:
+    try:
         # Store user info to database
         sql = "INSERT INTO users (first_name, last_name, email, password, amount_total, amount, request_remaining, role) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         password = str(hashlib.md5(password.encode()).digest())
@@ -148,7 +142,7 @@ def signup(first_name, last_name, email, password):
         cnx.commit()
         print(f"{bcolors.OKCYAN}Store user to database successfully!")
         return 200
-    else:
+    except:
         print(f"{bcolors.WARNING}Email had exist, please chose other email!")
         return 400
 
@@ -347,8 +341,8 @@ def change_password(token, old_password, new_password):
         return 401
 
 if __name__ == '__main__':
-    # signup("khang", "nghia", "test@gmail.com", "123123")
-    token = login("admin", "123123")
+    signup("khang", "nghia", "test2@gmail.com", "123123")
+    # token = login("admin", "123123")
     # change_password(token, "123123", "123123")
     # spam(token, ["thanhchem.k39a2@gmail.com"], 1)
     # print(get_info_user(token))
@@ -357,7 +351,7 @@ if __name__ == '__main__':
     # buy(token, "vip")
     # admin_edit_user(token, "test@gmail.com", "last_name", "Nghia")
     # print(get_info_all_user(token))
-    get_amount_total(token)
+    # get_amount_total(token)
 
     # cursor.execute('SELECT * FROM users')
     # users = cursor.fetchall()
