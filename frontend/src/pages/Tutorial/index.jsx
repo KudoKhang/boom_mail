@@ -39,24 +39,24 @@ export default function Tutorial() {
         </Box>
         <Box sx={{ mt: 2 }}>
           <Typo component="p" variant="h3" color="text.primary">
-            Description
+            🎉 News
           </Typo>
           <Typo component="p" color="text.primary">
-            text text...
+            The latest information about services, prices will be updated here
           </Typo>
         </Box>
         <Box sx={{ mt: 2, width: '100%' }}>
           <Typo component="p" variant="h3" color="text.primary">
-            Step by step
+            How to use
           </Typo>
           <Typo component="p" color="text.primary">
-            step 1: ...
+            💵 : First step, you need to deposit money into your account
           </Typo>
           <Typo component="p" color="text.primary">
-            step 2: ...
+            🙆🏻‍♂️ : Next, choose the service package you want
           </Typo>
           <Typo component="p" color="text.primary">
-            step 3: ...
+            📧 : Finally, fill in the list of email addresses you want to spam and click start
           </Typo>
         </Box>
         <Box sx={{ mt: 2 }}>
@@ -64,7 +64,7 @@ export default function Tutorial() {
             Contact us
           </Typo>
           <Typo component="p" color="text.primary">
-            email, phone, ...
+            📞 We always put prestige first, if you have any problems while using or need support, do not hesitate to contact us. We will support you 24/7
           </Typo>
         </Box>
       </Grid>
