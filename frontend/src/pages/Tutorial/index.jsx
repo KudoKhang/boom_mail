@@ -41,8 +41,11 @@ export default function Tutorial() {
           <Typo component="p" variant="h3" color="text.primary">
             🎉 News
           </Typo>
-          <Typo component="p" color="text.primary">
+          <Typo component="p" variant="h5" color="text.primary">
             The latest information about services, prices will be updated here
+          </Typo>
+          <Typo component="p" color="text.primary">
+            🥹 The site is in beta, so it's not stable, please contact admin directly if there are any problems
           </Typo>
         </Box>
         <Box sx={{ mt: 2, width: '100%' }}>
