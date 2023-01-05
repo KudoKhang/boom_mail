@@ -13,7 +13,7 @@ export default function Tutorial() {
     <Grid container spacing={2} sx={{ mb: 8, justifyContent: 'center' }}>
       <Grid item xs={12}>
         <Typo component="h1" variant="h2" align="center" color="text.primary" sx={{ mt: 2 }}>
-          Tutorial
+          👀 Tutorial
         </Typo>
       </Grid>
       <Grid
@@ -68,6 +68,9 @@ export default function Tutorial() {
           </Typo>
           <Typo component="p" color="text.primary">
             📞 We always put prestige first, if you have any problems while using or need support, do not hesitate to contact us. We will support you 24/7
+          </Typo>
+          <Typo component="p" color="text.primary">
+            📨 Join with us <a href="https://t.me/+-xS4H-XvTlkxNGY1"> Telegram </a>
           </Typo>
         </Box>
       </Grid>
