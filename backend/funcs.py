@@ -132,6 +132,29 @@ def admin_edit_user(token, email_user, properties, value):
     else:
         return "Invalid Token"
 
+def admin_search_user(token, email_user):
+    decoded_token = validation_token(token)
+    if decoded_token:
+        email = decoded_token["email"]
+        if email == 'admin':
+            cursor.execute("SELECT * FROM users WHERE email = %s", [email_user])
+            info = cursor.fetchall()[0]
+            info_final = {"first_name": info[0],
+                        "last_name": info[1],
+                        "amount": info[3],
+                        "request_remaning": info[5],
+                        "email": info[2],
+                        }
+            return info_final
+
+        else:
+            print(f"{bcolors.WARNING}Invalid Token!")
+            return "Invalid Token"
+    else:
+        print(f"{bcolors.WARNING}Invalid Token!")
+        return "Invalid Token"
+
+
 def signup(first_name, last_name, email, password):
     try:
         # Store user info to database
@@ -212,7 +235,7 @@ def get_info_all_user(token):
                     "email": user[2],
                     "amount": user[3],
                     "amount_total": user[4],
-                    "request_remaning": user[5]
+                    "request_remaining": user[5]
                 }
 
                 info_user.append(info)
