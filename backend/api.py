@@ -94,40 +94,49 @@ async def start_spam(token: str, targets: List, n_spam: int):
 def edit_user(token: str, email_user: str, properties: str, value: str):
     stt = admin_edit_user(token, email_user, properties, value)
     if stt == "Invalid Token":
-       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
 
 
 @app.get("/api/admin_get_all_user", status_code=200)
-def get_all_user(token: str):
+async def get_all_user(token: str):
     stt = get_info_all_user(token)
     if stt == "Invalid Token":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
     else:
         return stt
 
-@app.get("/api/admin_get_amount_total", status_code=200)
-def admin_get_amount_total(token: str):
-    stt = get_amount_total(token)
+@app.get("/api/amdin_search", status_code=200)
+def search_user(token: str, email_user: str):
+    stt = admin_search_user(token, email_user)
     if stt == "Invalid Token":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
     else:
         return stt
+
+@app.get("/api/admin_get_amount_total", status_code=200)
+def admin_get_amount_total(token: str):
+    # stt = get_amount_total(token)
+    # if stt == "Invalid Token":
+    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+    # else:
+    #     return stt
+    return 1
 
 
 @app.get("/api/payment_failed")
 def direct_to_homepage():
     print("Failed!")
-    return RedirectResponse("https://boomcheck.io")
+    return RedirectResponse("https://boomcheck.io/dashboard")
     
 
-@app.post("/api/payment/")
+@app.get("/api/payment/")
 async def payment(token: str = None, request: Request = None):
     res = await request.body()
     res = res.decode("utf-8")
     PAYMENT_AMOUNT = res.split("&")[1].split("=")[1]
     recharge(token, float(PAYMENT_AMOUNT))
     print("Successful!")
-    return RedirectResponse("https://boomcheck.io/login")
+    return RedirectResponse("https://boomcheck.io/dashboard")
         
 
 

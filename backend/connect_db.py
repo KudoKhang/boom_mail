@@ -12,7 +12,7 @@ try:
 
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-    # cursor.execute('set max_allowed_packet=67108864')
+    cursor.execute('set GLOBAL max_allowed_packet=67108864')
     print("Database Connected!")
 
 except Exception as e:
