@@ -12,6 +12,27 @@ from connect_db import *
 
 sg = sendgrid.SendGridAPIClient(sendgrid_key)
 
+def connect():
+    try:
+        config_db = {
+            'user': 'root',
+            # 'password': 'secret',
+            'host': '127.0.0.1',
+            'port': '3306',
+            'database': 'boomcheck',
+            'raise_on_warnings': True
+        }
+
+        cnx = mysql.connector.connect(**config_db)
+        cursor = cnx.cursor()
+        cursor.execute('set GLOBAL max_allowed_packet=67108864')
+        print("Database Connected!")
+
+    except Exception as e:
+        print(e)
+        print("Failed!")
+
+
 def spam(token, targets, n_spam):
     # Check request_remaning
     decoded_token = validation_token(token)
@@ -64,13 +85,9 @@ def spam_mailgun(token, targets, n_spam):
         request_remaining = cursor.fetchone()[0]
 
         if n_spam <= request_remaining:
-            # Update request_remaning
-            new_request_remaining = request_remaining - (n_spam * len(targets))
-            cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
-            cnx.commit()
-
             # Spam email to targets
             try:
+                successed_count = 0
                 target = [(t, random.choice(names)) for t in targets]
 
                 for spam in range(n_spam):
@@ -84,14 +101,20 @@ def spam_mailgun(token, targets, n_spam):
                         "subject": subject,
                         "text": content})
                     if response.status_code == 200:
-                        print(f"{bcolors.OKGREEN} Successful")
+                        successed_count += len(target)
+                        # print(f"{bcolors.OKGREEN} Successful")
                     time.sleep(time_sleep)
+                
+               # Update request_remaning 
+                new_request_remaining = request_remaining - successed_count
+                cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
+                cnx.commit() 
+
+                print(f"{bcolors.OKBLUE}\nSuccessful sent {successed_count} email spam to {len(targets)} targets!")
+            
             except Exception as err:
                 print(err)
-
-            print(f"{bcolors.OKBLUE}\nSuccessful sent {n_spam * len(targets)} email spam to {len(targets)} targets!")
             return 200
-
         else:
             print(f"{bcolors.WARNING}Not enough resquest!")
             return 403
@@ -221,49 +244,59 @@ def get_info_user(token):
         return "Invalid Token"
 
 def get_info_all_user(token):
-    decoded_token = validation_token(token)
-    if decoded_token:
-        email = decoded_token["email"]
-        if email == 'admin':
-            cursor.execute('SELECT * FROM users')
-            users = cursor.fetchall()
-            info_user = []
-            for user in users:
-                info = {
-                    "first_name": user[0],
-                    "last_name": user[1],
-                    "email": user[2],
-                    "amount": user[3],
-                    "amount_total": user[4],
-                    "request_remaining": user[5]
-                }
+    try:
+        decoded_token = validation_token(token)
+        if decoded_token:
+            email = decoded_token["email"]
+            if email == 'admin':
+                cursor.execute('SELECT * FROM users')
+                users = cursor.fetchall()
+                info_user = []
+                for user in users:
+                    info = {
+                        "first_name": user[0],
+                        "last_name": user[1],
+                        "email": user[2],
+                        "amount": user[3],
+                        "amount_total": user[4],
+                        "request_remaining": user[5]
+                    }
 
-                info_user.append(info)
-            return info_user
+                    info_user.append(info)
+                return info_user
+            else:
+                print(f"{bcolors.WARNING}Invalid Token!")
+                return "Invalid Token"  
         else:
             print(f"{bcolors.WARNING}Invalid Token!")
-            return "Invalid Token"  
-    else:
-        print(f"{bcolors.WARNING}Invalid Token!")
-        return "Invalid Token" 
+            return "Invalid Token" 
+    except Exception as err:
+        print(f"{err} in function get_info_all_user")
+        connect()
+        return "Invalid Token"  
 
 def get_amount_total(token):
-    decoded_token = validation_token(token)
-    if decoded_token:
-        email = decoded_token["email"]
-        if email == 'admin': 
-            cursor.execute('SELECT amount_total FROM users')
-            amount_total = cursor.fetchall()
-            total = 0
-            for amount in amount_total:
-                total += amount[0]
-            return total
+    try:
+        decoded_token = validation_token(token)
+        if decoded_token:
+            email = decoded_token["email"]
+            if email == 'admin': 
+                cursor.execute('SELECT amount_total FROM users')
+                amount_total = cursor.fetchall()
+                total = 0
+                for amount in amount_total:
+                    total += amount[0]
+                return total
+            else:
+                print(f"{bcolors.WARNING}Invalid Token!")
+                return "Invalid Token"  
         else:
             print(f"{bcolors.WARNING}Invalid Token!")
             return "Invalid Token"  
-    else:
-        print(f"{bcolors.WARNING}Invalid Token!")
-        return "Invalid Token"  
+    except Exception as err:
+        print(f"{err} in function get_info_all_user")
+        connect()
+        return "Invalid Token"   
 
 def validation_token(token):
     try:
