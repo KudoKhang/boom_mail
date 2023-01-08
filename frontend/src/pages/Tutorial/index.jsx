@@ -45,7 +45,8 @@ export default function Tutorial() {
             The latest information about services, prices will be updated here
           </Typo>
           <Typo component="p" color="text.primary">
-            🥹 The site is in beta, so it's not stable, please contact admin directly if there are any problems
+            🥹 The site is in beta, so it&apos;s not stable, please contact admin directly if there are
+            any problems
           </Typo>
         </Box>
         <Box sx={{ mt: 2, width: '100%' }}>
@@ -67,7 +68,8 @@ export default function Tutorial() {
             Contact us
           </Typo>
           <Typo component="p" color="text.primary">
-            📞 We always put prestige first, if you have any problems while using or need support, do not hesitate to contact us. We will support you 24/7
+            📞 We always put prestige first, if you have any problems while using or need support,
+            do not hesitate to contact us. We will support you 24/7
           </Typo>
           <Typo component="p" color="text.primary">
             📨 Join with us <a href="https://t.me/+-xS4H-XvTlkxNGY1"> Telegram </a>

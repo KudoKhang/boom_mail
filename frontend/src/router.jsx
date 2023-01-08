@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { ADMIN_URL, URL } from './config/constants';
 import { LayoutUser, LayoutAdmin } from './layout';
 
@@ -19,6 +19,11 @@ const AdminDashboard = lazy(() => import('./pages/Admin/Dashboard'));
 const { HOME, PRICING, LOGIN, SIGNUP, PAYMENT, PROFILE, CCV, TUTORIAL } = URL;
 
 export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Navigate to={TUTORIAL} />,
+    errorElement: <PageError />,
+  },
   {
     path: '/',
     element: <LayoutUser />,

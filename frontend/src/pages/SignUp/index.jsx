@@ -15,20 +15,29 @@ import { URL } from '../../config/constants';
 import { SignupApi } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { useAlert } from '../../contexts/alert';
+import { useLoading } from '../../contexts/loading';
+import { useHandleError } from '../../hooks/useHandleError';
 
 export default function SignUp() {
   const { formData, onInputChange } = useFormData();
   const navigate = useNavigate();
-  const { showSuccess, showError } = useAlert();
+  const { showSuccess } = useAlert();
+  const { loading, showLoading, hideLoading } = useLoading();
+  const { handleResponseMsg } = useHandleError();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+    showLoading();
+
     try {
       await SignupApi(formData);
+      hideLoading();
       navigate(URL.LOGIN, { replace: true });
       showSuccess('Sign up successful');
     } catch (error) {
-      showError(error?.response?.data?.message || error?.message);
+      hideLoading();
+      handleResponseMsg(error);
     }
   };
 

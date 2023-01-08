@@ -170,7 +170,7 @@ def signup(first_name, last_name, email, password):
         cursor.execute(sql, val)
         print(f"{bcolors.OKCYAN}Store user to database successfully!")
         return 200
-    except:
+    except Exception as err:
         print(f"{bcolors.WARNING}Email had exist, please chose other email!")
         return 400
 

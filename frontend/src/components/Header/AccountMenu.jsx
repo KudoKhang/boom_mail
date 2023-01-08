@@ -22,7 +22,7 @@ export default function AccountMenu({ logout, user }) {
     setAnchorEl(null);
   };
 
-  const { request_remaining: remaning, amount } = user;
+  const { request_remaining: remaining, amount } = user;
 
   return (
     <>
@@ -81,7 +81,7 @@ export default function AccountMenu({ logout, user }) {
         </MenuItem>
         <MenuItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typo variant="span">Requests: </Typo>
-          <Typo variant="h6">{`${remaning || 0}`}</Typo>
+          <Typo variant="h6">{`${remaining || 0}`}</Typo>
         </MenuItem>
         <MenuItem>
           <Link variant="link" href={URL.PROFILE}>

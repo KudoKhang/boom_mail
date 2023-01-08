@@ -6,17 +6,21 @@ import { LoadingContext } from '../contexts/loading';
 export function LoadingProvider({ children }) {
   const [loading, setLoading] = useState(false);
 
-  const valueLoading = useMemo(
+  const showLoading = () => setLoading(true);
+
+  const hideLoading = () => setLoading(false);
+
+  const value = useMemo(
     () => ({
       loading,
-      showLoading: () => setLoading(true),
-      hideLoading: () => setLoading(false),
+      showLoading,
+      hideLoading,
     }),
     [loading]
   );
 
   return (
-    <LoadingContext.Provider value={valueLoading}>
+    <LoadingContext.Provider value={value}>
       <>
         <OverlaySpinner open={loading} />
         {children}
