@@ -12,27 +12,6 @@ from connect_db import *
 
 sg = sendgrid.SendGridAPIClient(sendgrid_key)
 
-def connect():
-    try:
-        config_db = {
-            'user': 'root',
-            # 'password': 'secret',
-            'host': '127.0.0.1',
-            'port': '3306',
-            'database': 'boomcheck',
-            'raise_on_warnings': True
-        }
-
-        cnx = mysql.connector.connect(**config_db)
-        cursor = cnx.cursor()
-        cursor.execute('set GLOBAL max_allowed_packet=67108864')
-        print("Database Connected!")
-
-    except Exception as e:
-        print(e)
-        print("Failed!")
-
-
 def spam(token, targets, n_spam):
     # Check request_remaning
     decoded_token = validation_token(token)
@@ -272,7 +251,6 @@ def get_info_all_user(token):
             return "Invalid Token" 
     except Exception as err:
         print(f"{err} in function get_info_all_user")
-        connect()
         return "Invalid Token"  
 
 def get_amount_total(token):
@@ -295,7 +273,6 @@ def get_amount_total(token):
             return "Invalid Token"  
     except Exception as err:
         print(f"{err} in function get_info_all_user")
-        connect()
         return "Invalid Token"   
 
 def validation_token(token):
