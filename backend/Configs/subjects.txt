@@ -12,3 +12,14 @@ Red Hat Developer Weekly Newsletter
 Reminder: Get 20% off on VNC Connect this Cyber Monday!
 Black Friday deal: Save $100 off 1 year of Coursera Plus
 The best sale of the year is here | Black Friday is live
+New courses for your new goals
+Label image data 10x faster
+3 reasons to start your data science master’s in 2023
+We've updated our Terms of Service and our Privacy Policy
+Improving Python with Rust | Ed Rutherford in Better Programming
+Best of Advice on Better Programming (2022)
+Building Full-Stack TypeScript Applications Using tRPC | Ashley Peacock in Better Programming
+Train YOLOv5 Instance Segmentation on Custom Data
+10 Days left to enter the Drone Video of the Year contest!
+The Best of Python On Better Programming in 2022
+Learn Game Development with Computer Vision on the Web
