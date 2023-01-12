@@ -65,7 +65,6 @@ async def change_pass(token, old_password, new_password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Old password incorrect")
 
 
-
 @app.post("/validation", status_code=200)
 async def validation(token):
     return validation_token(token)
@@ -105,6 +104,7 @@ async def get_all_user(token: str):
     else:
         return stt
 
+
 @app.get("/api/amdin_search", status_code=200)
 async def search_user(token: str, email_user: str):
     stt = admin_search_user(token, email_user)
@@ -112,6 +112,7 @@ async def search_user(token: str, email_user: str):
        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
     else:
         return stt
+
 
 @app.get("/api/admin_get_amount_total", status_code=200)
 async def admin_get_amount_total(token: str):
@@ -137,7 +138,6 @@ async def payment(token: str = None, request: Request = None):
     print("Successful!")
     return RedirectResponse("https://boomcheck.io/dashboard")
         
-
 
 if __name__ == '__main__':
     uvicorn.run(app)

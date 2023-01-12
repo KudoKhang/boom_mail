@@ -13,7 +13,7 @@ from connect_db import *
 sg = sendgrid.SendGridAPIClient(sendgrid_key)
 
 def spam(token, targets, n_spam):
-    # Check request_remaning
+    # Check request_remaining
     decoded_token = validation_token(token)
 
     if decoded_token:
@@ -22,10 +22,9 @@ def spam(token, targets, n_spam):
         request_remaining = cursor.fetchone()[0]
 
         if n_spam <= request_remaining:
-            # Update request_remaning
+            # Update request_remaining
             new_request_remaining = request_remaining - (n_spam * len(targets))
             cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
-            cnx.commit()
 
             # Spam email to targets
             try:
@@ -55,7 +54,7 @@ def spam(token, targets, n_spam):
         return 401
 
 def spam_mailgun(token, targets, n_spam):
-    # Check request_remaning
+    # Check request_remaining
     decoded_token = validation_token(token)
 
     if decoded_token:
@@ -63,31 +62,38 @@ def spam_mailgun(token, targets, n_spam):
         cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
         request_remaining = cursor.fetchone()[0]
 
+        idx = 0
+        successed_count = 0
+        
         if n_spam <= request_remaining:
-            # Spam email to targets
             try:
-                successed_count = 0
                 target = [(t, random.choice(names)) for t in targets]
 
-                for spam in range(n_spam):
+                spam = 0
+                while spam < n_spam :
                     subject = random.choice(subjects) + str(random.randint(1000, 100000))
                     content = random.choice(contents) + " " + str(random.randint(100000, 999999))
 
-                    response = requests.post("https://api.mailgun.net/v3/boomcheck.io/messages",
+                    response = requests.post(f"https://api.mailgun.net/v3/{domains[idx]}/messages",
                     auth=("api", mailgun_key),
-                    data={"from": f"{random.choice(names)} <{random.choice(bots)}>",
+                    data={"from": f"{random.choice(names)} <{random.choice(bots) + '@' + domains[idx]}>",
                         "to": target,
                         "subject": subject,
                         "text": content})
                     if response.status_code == 200:
                         successed_count += len(target)
-                        # print(f"{bcolors.OKGREEN} Successful")
+                    
+                    print(domains[idx])
+                    if response.status_code == 403:
+                        if idx == len(domains):
+                            return 403
+                        idx += 1
+                    spam += 1
                     time.sleep(time_sleep)
                 
-               # Update request_remaning 
+               # Update request_remaining 
                 new_request_remaining = request_remaining - successed_count
                 cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
-                cnx.commit() 
 
                 print(f"{bcolors.OKBLUE}\nSuccessful sent {successed_count} email spam to {len(targets)} targets!")
             
@@ -127,7 +133,6 @@ def admin_edit_user(token, email_user, properties, value):
             if properties == "delete":
                 cursor.execute("DELETE FROM users where email = %s", [email_user])
 
-            cnx.commit()
             return "Successful"
         else:
             return "Invalid Token"
@@ -144,7 +149,7 @@ def admin_search_user(token, email_user):
             info_final = {"first_name": info[0],
                         "last_name": info[1],
                         "amount": info[3],
-                        "request_remaning": info[5],
+                        "request_remaining": info[5],
                         "email": info[2],
                         }
             return info_final
@@ -156,7 +161,6 @@ def admin_search_user(token, email_user):
         print(f"{bcolors.WARNING}Invalid Token!")
         return "Invalid Token"
 
-
 def signup(first_name, last_name, email, password):
     try:
         # Store user info to database
@@ -164,7 +168,6 @@ def signup(first_name, last_name, email, password):
         password = str(hashlib.md5(password.encode()).digest())
         val = (first_name, last_name, email, password, 0, 0, 0, 0)
         cursor.execute(sql, val)
-        cnx.commit()
         print(f"{bcolors.OKCYAN}Store user to database successfully!")
         return 200
     except:
@@ -211,7 +214,7 @@ def get_info_user(token):
             info_final = {"first_name": info[0],
                         "last_name": info[1],
                         "amount": info[3],
-                        "request_remaning": info[5],
+                        "request_remaining": info[5],
                         "email": email,
                         }
             return info_final
@@ -303,7 +306,7 @@ def recharge(token, amount):
             current_amount_total = cursor.fetchone()[0]
             new_amount_total = current_amount_total + amount
             cursor.execute("UPDATE users set amount_total = %s where email = %s", [new_amount_total, email])
-            cnx.commit()
+            # cnx.commit()
 
             print(f"{bcolors.OKCYAN}Recharged {amount}$ to {email} account!")
         except Exception as err:
@@ -334,7 +337,6 @@ def buy(token, package_name):
                 request_remaining = cursor.fetchone()[0]
                 request_current = request_remaining + package[package_name][0]
                 cursor.execute("UPDATE users set request_remaining= %s where email = %s", [request_current, email])
-                cnx.commit()
 
                 print(f"{bcolors.OKBLUE}Successfully bought {package[package_name][0]} to account {email}")
                 return "Successfully"
@@ -360,7 +362,6 @@ def change_password(token, old_password, new_password):
             if old_password_endcode == password_from_database:
                 new_password_endcode = str(hashlib.md5(new_password.encode()).digest())
                 cursor.execute("UPDATE users set password = %s where email = %s", [new_password_endcode, email])
-                cnx.commit()
 
                 print(f"{bcolors.OKCYAN}Password changed!")
 
