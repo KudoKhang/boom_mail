@@ -1,9 +1,10 @@
 import mysql.connector
+import os
 
 try:
     config = {
         'user': 'root',
-        # 'password': 'devbyk',
+        'password': os.environ.get('PASS_DATABASE'),
         'host': '127.0.0.1',
         'port': '3306',
         'database': 'boomcheck',
