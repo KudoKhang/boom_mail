@@ -12,21 +12,25 @@ import { changePassword } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { useAlert } from '../../contexts/alert';
 import { useHandleError } from '../../hooks/useHandleError';
+import { useLoading } from '../../contexts/loading';
 
 export default function Profile() {
   const { formData, onInputChange, resetForm } = useFormData();
-  const { showSuccess, showError } = useAlert();
+  const { showSuccess } = useAlert();
   const { handleResponseMsg, handleUnauthorized } = useHandleError();
   const { user } = useOutletContext();
+  const { loading, showLoading, hideLoading } = useLoading();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+    showLoading();
+
     try {
       const { new_password: newPass, password_confirmation: confirmPass } = formData;
 
       if (newPass !== confirmPass) {
-        showError('New password and password confirmation does not match');
-        return;
+        throw new Error('New password and password confirmation does not match');
       }
 
       await changePassword(formData);
@@ -35,6 +39,8 @@ export default function Profile() {
     } catch (error) {
       handleUnauthorized(error);
       handleResponseMsg(error);
+    } finally {
+      hideLoading();
     }
   };
 

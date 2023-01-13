@@ -42,8 +42,9 @@ export default function Home() {
   const [reqNumber, setReqNumber] = useState(0);
   const [loading, setLoading] = useState(false);
   const { reloadUser } = useOutletContext();
-  const { showSuccess, showError } = useAlert();
+  const { showSuccess } = useAlert();
   const [total, setTotal] = useState(0);
+  const [canLogged, setCanLogged] = useState(false);
 
   const transformEmails = (emails) => {
     return emails
@@ -67,41 +68,46 @@ export default function Home() {
       if (!list?.length) {
         throw new Error('Emails invalid');
       }
-      setReqNumber(number * list.length);
-      setTotal(number * list.length);
-      await addMailsApi({ token, n_spam: number }, list);
+      const parseNum = parseInt(number, 10);
+      if (!parseNum || parseNum < 0) {
+        throw new Error('Request number invalid');
+      }
+      setReqNumber(parseNum * list.length);
+      setTotal(parseNum * list.length);
+      await addMailsApi({ token, n_spam: parseNum }, list);
       await reloadUser();
+      setCanLogged(true);
     } catch (error) {
       handleResponseMsg(error);
       handleUnauthorized(error);
+      setLoading(false);
     }
   };
 
   const showLogEmails = () => {
-    try {
-      setTimeout(() => {
-        setLogEmails((prev) => [
-          ...prev,
-          `Request ${prev.length + 1}: Spam Successfully Completed 💣`,
-        ]);
-        setReqNumber((prev) => prev - 1);
-      }, SPAM_INTERVAL);
-    } catch {
-      showError('Something went wrong');
-    }
+    setTimeout(() => {
+      setLogEmails((prev) => [
+        ...prev,
+        `Request ${prev.length + 1}: Spam Successfully Completed 💣`,
+      ]);
+      setReqNumber((prev) => prev - 1);
+    }, SPAM_INTERVAL);
   };
 
   useEffect(() => {
+    if (!canLogged) return;
+
     if (!reqNumber) {
       if (loading) {
         showSuccess(`Spam successful: ${total} emails`);
         setTotal(0);
       }
       setLoading(false);
+      setCanLogged(false);
       return;
     }
     showLogEmails();
-  }, [reqNumber]);
+  }, [reqNumber, canLogged]);
 
   useEffect(() => {
     document.title = 'Home';

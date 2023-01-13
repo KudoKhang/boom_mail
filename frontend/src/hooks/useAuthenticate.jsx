@@ -5,7 +5,7 @@ import { URL } from '../config/constants';
 import { localCache } from '../utils/localStorage';
 import { useHandleError } from './useHandleError';
 
-const { HOME, PAYMENT, PRICING, LOGIN, PROFILE, BASE } = URL;
+const { HOME, PAYMENT, PRICING, LOGIN, PROFILE, BASE, TUTORIAL } = URL;
 
 export function useAuthenticate() {
   const location = useLocation();
@@ -35,7 +35,7 @@ export function useAuthenticate() {
       return;
     }
 
-    if (![BASE, HOME, PAYMENT, PRICING, PROFILE].includes(location?.pathname)) {
+    if (![BASE, HOME, PAYMENT, PRICING, PROFILE, TUTORIAL].includes(location?.pathname)) {
       setUser(localCache.getUser());
       return;
     }

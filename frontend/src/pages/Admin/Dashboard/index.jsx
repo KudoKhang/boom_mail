@@ -7,16 +7,18 @@ import Table from '../../../components/Table';
 import { getTotalAmountByAd, getUsers, updateUser } from '../../../api';
 import { useHandleError } from '../../../hooks/useHandleError';
 import { useAlert } from '../../../contexts/alert';
+import { useLoading } from '../../../contexts/loading';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const { handleResponseMsg, handleAdminUnauthorized } = useHandleError();
-  const [loading, setLoading] = useState(false);
+  const { loading, showLoading, hideLoading } = useLoading();
   const [totalAmount, setTotalAmount] = useState(0);
   const { showSuccess } = useAlert();
 
   useEffect(() => {
     document.title = 'Dashboard';
+    hideLoading();
     (async () => {
       try {
         const total = await getTotalAmountByAd();
@@ -32,7 +34,7 @@ export default function Dashboard() {
 
   const onSubmit = async (data) => {
     if (loading) return;
-    setLoading(true);
+    showLoading();
 
     try {
       const { email, field, value } = data;
@@ -46,7 +48,7 @@ export default function Dashboard() {
       handleAdminUnauthorized(error);
       handleResponseMsg(error);
     } finally {
-      setLoading(false);
+      hideLoading();
     }
   };
 

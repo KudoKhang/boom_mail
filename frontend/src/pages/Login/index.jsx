@@ -12,28 +12,32 @@ import { URL } from '../../config/constants';
 import { LoginApi } from '../../api';
 import { useFormData } from '../../hooks/useFormData';
 import { localCache } from '../../utils/localStorage';
-import { useAlert } from '../../contexts/alert';
 import { useHandleError } from '../../hooks/useHandleError';
+import { useLoading } from '../../contexts/loading';
 
 export default function Login() {
   const { formData, onInputChange } = useFormData();
-  const { showError } = useAlert();
   const { handleResponseMsg } = useHandleError();
   const navigate = useNavigate();
+  const { loading, showLoading, hideLoading } = useLoading();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+    showLoading();
+
     try {
       const token = await LoginApi(formData);
 
       if (!token) {
-        showError('Wrong email or password, please try again');
-        return;
+        throw new Error('Wrong email or password, please try again');
       }
 
       localCache.setUserToken(token);
-      navigate(URL.HOME, { replace: true });
+      hideLoading();
+      navigate(URL.TUTORIAL, { replace: true });
     } catch (error) {
+      hideLoading();
       handleResponseMsg(error);
     }
   };

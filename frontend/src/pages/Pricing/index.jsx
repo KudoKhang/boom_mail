@@ -14,6 +14,8 @@ import { useOutletContext } from 'react-router-dom';
 import { buyPackage } from '../../api';
 import { useAlert } from '../../contexts/alert';
 import ConfirmDialog from '../../components/ConfirmDialog';
+import { useLoading } from '../../contexts/loading';
+import { useHandleError } from '../../hooks/useHandleError';
 
 const tiers = [
   {
@@ -41,21 +43,26 @@ const tiers = [
 ];
 
 export default function Pricing() {
-  // const navigate = useNavigate();
-  const { showSuccess, showError } = useAlert();
+  const { showSuccess } = useAlert();
   const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const { reloadUser } = useOutletContext();
+  const { loading, showLoading, hideLoading } = useLoading();
+  const { handleResponseMsg } = useHandleError();
 
   const handleBuy = async () => {
+    if (loading) return;
+    showLoading();
+
     try {
       await buyPackage(selectedItem?.value);
       await reloadUser();
       showSuccess('Buy successful');
     } catch (error) {
-      showError(error?.response?.data?.message || error?.message);
+      handleResponseMsg(error);
     } finally {
       closePopup();
+      hideLoading();
     }
   };
 
