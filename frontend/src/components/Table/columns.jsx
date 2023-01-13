@@ -34,8 +34,8 @@ export const useColumns = ({ openPopupDelete }) => {
       editable: true,
     },
     {
-      field: 'request_remaning',
-      headerName: 'Request remaning',
+      field: 'request_remaining',
+      headerName: 'Request remaining',
       type: 'number',
       width: 140,
       editable: true,

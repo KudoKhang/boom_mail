@@ -159,7 +159,7 @@ export default function Home() {
           </Box>
           <Box>
             <Typo>1️⃣ Enter list emails, one email per line</Typo>
-            <Typo>2️⃣ Enter number of requests</Typo>
+            <Typo>2️⃣ Enter number of requests. Recommend 10-15 requests</Typo>
             <Typo>3️⃣ Click start 🦥</Typo>
           </Box>
         </Grid>

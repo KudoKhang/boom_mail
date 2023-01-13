@@ -19,6 +19,6 @@ export const ADMIN_URL = {
   HOME: '/admin/dashboard',
 };
 
-export const SPAM_INTERVAL = 1000; // time
+export const SPAM_INTERVAL = 500; // time
 
 export const TUTORIAL_URL = process.env.REACT_APP_TUTORIAL_URL;

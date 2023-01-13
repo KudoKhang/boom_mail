@@ -22,7 +22,7 @@ export default function AccountMenu({ logout, user }) {
     setAnchorEl(null);
   };
 
-  const { request_remaning: remaning, amount } = user;
+  const { request_remaining: remaning, amount } = user;
 
   return (
     <>

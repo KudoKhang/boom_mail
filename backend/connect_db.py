@@ -1,9 +1,10 @@
 import mysql.connector
+import os
 
 try:
     config = {
         'user': 'root',
-        # 'password': 'secret',
+        'password': os.environ.get('PASS_DATABASE'),
         'host': '127.0.0.1',
         'port': '3306',
         'database': 'boomcheck',
@@ -12,7 +13,8 @@ try:
 
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-    # cursor.execute('set max_allowed_packet=67108864')
+    cursor.execute('set GLOBAL max_allowed_packet=67108864')
+    cnx.autocommit = True
     print("Database Connected!")
 
 except Exception as e:

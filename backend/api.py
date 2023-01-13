@@ -32,7 +32,7 @@ app.add_middleware(
 
 
 @app.post("/api/user", status_code=200)
-def get_user(token):
+async def get_user(token):
     stt = get_info_user(token)
     if stt == "Invalid Token":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token")
@@ -41,14 +41,14 @@ def get_user(token):
 
 
 @app.post("/api/signup", status_code=200)
-def get_data_signup(first_name, last_name, email, password):
+async def get_data_signup(first_name, last_name, email, password):
     stt = signup(first_name, last_name, email, password)
     if stt == 400:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email exist!")
 
 
 @app.post("/api/login", status_code=200)
-def get_data_login(email, password):
+async def get_data_login(email, password):
     stt = login(email, password)
     if stt == 401:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Password or Email incorrect, please try again!")
@@ -57,7 +57,7 @@ def get_data_login(email, password):
 
 
 @app.post("/api/changepassword", status_code=200)
-def change_pass(token, old_password, new_password):
+async def change_pass(token, old_password, new_password):
     stt = change_password(token, old_password, new_password)
     if stt == 401:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token")
@@ -65,14 +65,13 @@ def change_pass(token, old_password, new_password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Old password incorrect")
 
 
-
 @app.post("/validation", status_code=200)
-def validation(token):
+async def validation(token):
     return validation_token(token)
 
 
 @app.post("/api/buy", status_code=200)
-def buy_request(token, package_name):
+async def buy_request(token, package_name):
     stt = buy(token, package_name)
     if stt == "Invalid Token":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
@@ -91,22 +90,32 @@ async def start_spam(token: str, targets: List, n_spam: int):
 
 
 @app.post("/api/admin_edit", status_code=200)
-def edit_user(token: str, email_user: str, properties: str, value: str):
+async def edit_user(token: str, email_user: str, properties: str, value: str):
     stt = admin_edit_user(token, email_user, properties, value)
     if stt == "Invalid Token":
-       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
+       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
 
 
 @app.get("/api/admin_get_all_user", status_code=200)
-def get_all_user(token: str):
+async def get_all_user(token: str):
     stt = get_info_all_user(token)
     if stt == "Invalid Token":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
     else:
         return stt
 
+
+@app.get("/api/amdin_search", status_code=200)
+async def search_user(token: str, email_user: str):
+    stt = admin_search_user(token, email_user)
+    if stt == "Invalid Token":
+       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!")
+    else:
+        return stt
+
+
 @app.get("/api/admin_get_amount_total", status_code=200)
-def admin_get_amount_total(token: str):
+async def admin_get_amount_total(token: str):
     stt = get_amount_total(token)
     if stt == "Invalid Token":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token!") 
@@ -115,21 +124,20 @@ def admin_get_amount_total(token: str):
 
 
 @app.get("/api/payment_failed")
-def direct_to_homepage():
+async def direct_to_homepage():
     print("Failed!")
-    return RedirectResponse("https://boomcheck.io")
+    return RedirectResponse("https://boomcheck.io/dashboard")
     
 
-@app.post("/api/payment/")
+@app.get("/api/payment/")
 async def payment(token: str = None, request: Request = None):
     res = await request.body()
     res = res.decode("utf-8")
     PAYMENT_AMOUNT = res.split("&")[1].split("=")[1]
     recharge(token, float(PAYMENT_AMOUNT))
     print("Successful!")
-    return RedirectResponse("https://boomcheck.io/login")
+    return RedirectResponse("https://boomcheck.io/dashboard")
         
-
 
 if __name__ == '__main__':
     uvicorn.run(app)

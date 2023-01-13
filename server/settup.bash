@@ -54,3 +54,6 @@ ALTER TABLE boomcheck.users ADD CONSTRAINT email UNIQUE(email);
 # FOLDER
 sudo chmod 777 /var/www/boomcheck 
 sudo chown -R ubuntu /var/www/boomcheck
+
+#GIT
+git branch -D `git branch --merged | grep -v \* | xargs`
