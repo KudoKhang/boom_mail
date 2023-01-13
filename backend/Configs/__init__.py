@@ -16,8 +16,18 @@ package = {
 
 #-----------------------------------
 domains = [
+    'booomcheck.tech',
+    'boomcheck.store',
+    'boomcheck.shop',
+    'boomcheck.website',
+    'boomcheck.online',
+    'tophucthinh.xyz',
+    'boomchecks.shop',
+    'booomcheck.online',
+    'boomcheck.tech',
+    'boomchecks.tech',
+    'boomchecks.online',
     'boomcheck.io',
-    'tophucthinh.xyz'
 ] 
  
 #-----------------------------------
