@@ -144,15 +144,22 @@ def admin_search_user(token, email_user):
     if decoded_token:
         email = decoded_token["email"]
         if email == 'admin':
+            
             cursor.execute("SELECT * FROM users WHERE email = %s", [email_user])
-            info = cursor.fetchall()[0]
-            info_final = {"first_name": info[0],
-                        "last_name": info[1],
-                        "amount": info[3],
-                        "request_remaining": info[5],
-                        "email": info[2],
-                        }
-            return info_final
+            try:
+                info = cursor.fetchall()[0]
+
+                info_final = {"first_name": info[0],
+                            "last_name": info[1],
+                            "amount": info[3],
+                            "amount_total": info[4],
+                            "request_remaining": info[5],
+                            "email": info[2],
+                            }
+                return [info_final]
+            except:
+                return []
+            
 
         else:
             print(f"{bcolors.WARNING}Invalid Token!")

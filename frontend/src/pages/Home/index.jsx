@@ -44,7 +44,6 @@ export default function Home() {
   const { reloadUser } = useOutletContext();
   const { showSuccess } = useAlert();
   const [total, setTotal] = useState(0);
-  const [canLogged, setCanLogged] = useState(false);
 
   const transformEmails = (emails) => {
     return emails
@@ -76,7 +75,6 @@ export default function Home() {
       setTotal(parseNum * list.length);
       await addMailsApi({ token, n_spam: parseNum }, list);
       await reloadUser();
-      setCanLogged(true);
     } catch (error) {
       handleResponseMsg(error);
       handleUnauthorized(error);
@@ -95,19 +93,16 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!canLogged) return;
-
     if (!reqNumber) {
       if (loading) {
         showSuccess(`Spam successful: ${total} emails`);
         setTotal(0);
       }
       setLoading(false);
-      setCanLogged(false);
       return;
     }
     showLogEmails();
-  }, [reqNumber, canLogged]);
+  }, [reqNumber]);
 
   useEffect(() => {
     document.title = 'Home';

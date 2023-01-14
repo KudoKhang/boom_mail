@@ -35,7 +35,8 @@ export default function Footer() {
         }}
       >
         <Typography variant="body1">
-          You have problems, we have solved them. Contact for work 💌 <a href="https://t.me/+-xS4H-XvTlkxNGY1"> Telegram </a>
+          You have problems, we have solved them. Contact for work 💌{' '}
+          <a href="https://t.me/+-xS4H-XvTlkxNGY1"> Telegram </a>
         </Typography>
         <Copyright />
       </Box>

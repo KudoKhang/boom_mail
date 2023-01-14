@@ -105,7 +105,7 @@ async def get_all_user(token: str):
         return stt
 
 
-@app.get("/api/amdin_search", status_code=200)
+@app.get("/api/admin_search", status_code=200)
 async def search_user(token: str, email_user: str):
     stt = admin_search_user(token, email_user)
     if stt == "Invalid Token":
