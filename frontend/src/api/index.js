@@ -67,3 +67,9 @@ export const updateUser = async (payload) => {
   const { data } = await axiosIns.post('/admin_edit', {}, { params: { token, ...payload } });
   return data;
 };
+
+export const searchUser = async (payload) => {
+  const token = localCache.getAdminToken();
+  const { data } = await axiosIns.get('/admin_search', { params: { token, ...payload } });
+  return data;
+};

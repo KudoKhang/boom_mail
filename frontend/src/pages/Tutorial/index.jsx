@@ -45,8 +45,8 @@ export default function Tutorial() {
             The latest information about services, prices will be updated here
           </Typo>
           <Typo component="p" color="text.primary">
-            🥹 The site is in beta, so it&apos;s not stable, please contact admin directly if there are
-            any problems
+            🥹 The site is in beta, so it&apos;s not stable, please contact admin directly if there
+            are any problems
           </Typo>
         </Box>
         <Box sx={{ mt: 2, width: '100%' }}>
