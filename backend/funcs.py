@@ -83,7 +83,6 @@ def spam_mailgun(token, targets, n_spam):
                     if response.status_code == 200:
                         successed_count += len(target)
                     
-                    print(domains[idx])
                     if response.status_code == 403:
                         if idx == len(domains):
                             return 403
@@ -170,7 +169,7 @@ def signup(first_name, last_name, email, password):
         cursor.execute(sql, val)
         print(f"{bcolors.OKCYAN}Store user to database successfully!")
         return 200
-    except Exception as err:
+    except:
         print(f"{bcolors.WARNING}Email had exist, please chose other email!")
         return 400
 

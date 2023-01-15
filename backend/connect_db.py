@@ -1,10 +1,13 @@
 import mysql.connector
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 try:
     config = {
         'user': 'root',
-        'password': os.environ.get('PASS_DATABASE'),
+        'password': os.getenv('PASS_DATABASE'),
         'host': '127.0.0.1',
         'port': '3306',
         'database': 'boomcheck',
