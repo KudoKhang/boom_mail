@@ -45,8 +45,10 @@ export default function Tutorial() {
             The latest information about services, prices will be updated here
           </Typo>
           <Typo component="p" color="text.primary">
-            🥹 The site is in beta, so it&apos;s not stable, please contact admin directly if there
-            are any problems
+            🏷️ Discount VIP package from $80 to $50
+          </Typo>
+          <Typo component="p" color="text.primary">
+            🏷 Discount PRO package from $130 to $90
           </Typo>
         </Box>
         <Box sx={{ mt: 2, width: '100%' }}>

@@ -10,22 +10,22 @@ time_token_available = 60 * 30
 
 package = {
     "normal": [1000, 20],
-    "vip"   : [5000, 80],
-    "pro"   : [10000, 130]
+    "vip"   : [5000, 50],
+    "pro"   : [10000, 90]
 }
 
 #-----------------------------------
 domains = [
+    'boomcheck.website',
+    'boomcheck.tech',
+    'boomcheck.shop',
+    'boomcheck.online',
+    'booomcheck.online',
+    'boomchecks.tech',
     'booomcheck.tech',
     'boomcheck.store',
-    'boomcheck.shop',
-    'boomcheck.website',
-    'boomcheck.online',
     'tophucthinh.xyz',
     'boomchecks.shop',
-    'booomcheck.online',
-    'boomcheck.tech',
-    'boomchecks.tech',
     'boomchecks.online',
     'boomcheck.io',
 ] 
