@@ -10,17 +10,6 @@ import time
 
 from funcs import *
 from fastapi.middleware.cors import CORSMiddleware
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        logging.FileHandler("log_file.log"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
 
 
 app_desc = """<h2>[Target / Numbers of spam / Time sleep]</h2>"""
@@ -137,20 +126,15 @@ async def admin_get_amount_total(token: str):
 
 @app.get("/api/payment_failed")
 async def direct_to_homepage():
-    logger.info("="*80)
-    logger.info("Failed!")
     return RedirectResponse("https://boomcheck.io/dashboard")
     
 
 @app.post("/api/payment/")
 async def payment(token: str = None, request: Request = None):
-    logger.info("="*80)
-    logger.info("Pass this function")
     res = await request.body()
     res = res.decode("utf-8")
     PAYMENT_AMOUNT = res.split("&")[1].split("=")[1]
     recharge(token, float(PAYMENT_AMOUNT))
-    logger.info("Successful!")
     return RedirectResponse("https://boomcheck.io/dashboard")
         
 
