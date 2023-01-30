@@ -5,7 +5,7 @@ import random
 secret_key = "devbyk"
 sendgrid_key = "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"
 mailgun_key = "7c69ed36c0114dbe0e5d65618b5080ae-c2efc90c-46c9d97a"
-time_sleep = 0.1
+time_sleep = 0
 time_token_available = 60 * 30
 
 package = {
@@ -46,14 +46,11 @@ class bcolors:
 with open("Configs/bots.txt", "r") as f:
     bots = [line.rstrip() for line in f]
 
-with open("Configs/targets.txt", "r") as f:
-    targets = [line.rstrip() for line in f]
-
 with open("Configs/subjects.txt", "r") as f:
     subjects = [line.rstrip() for line in f]
 
 with open("Configs/contents.txt", "r") as f:
-    contents = [line.rstrip() for line in f]
+    contents = f.read().split('---')
 
 with open("Configs/names.txt", "r") as f:
     names = [line.rstrip() for line in f]

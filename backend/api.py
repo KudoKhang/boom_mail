@@ -140,4 +140,3 @@ async def payment(token: str = None, request: Request = None):
 
 if __name__ == '__main__':
     uvicorn.run(app)
-    # uvicorn.run(app, host="localhost", port=8001)

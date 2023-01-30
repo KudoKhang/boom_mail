@@ -62,7 +62,6 @@ def spam_mailgun(token, targets, n_spam):
         cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
         request_remaining = cursor.fetchone()[0]
 
-        idx = 0
         successed_count = 0
         
         if n_spam <= request_remaining:
@@ -71,23 +70,24 @@ def spam_mailgun(token, targets, n_spam):
 
                 spam = 0
                 while spam < n_spam :
-                    subject = random.choice(subjects) + str(random.randint(1000, 100000))
-                    content = random.choice(contents) + " " + str(random.randint(100000, 999999))
+                    subject = random.choice(subjects) + "#" + str(random.randint(1000, 100000))
+                    content = random.choice(contents).format(random.choice(names), str(random.randint(100000, 999999)))
 
-                    response = requests.post(f"https://api.mailgun.net/v3/{domains[idx]}/messages",
-                    auth=("api", mailgun_key),
-                    data={"from": f"{random.choice(names)} <{random.choice(bots) + '@' + domains[idx]}>",
-                        "to": target,
-                        "subject": subject,
-                        "text": content})
+                    domain = random.choice(domains)
+
+                    response = requests.post(f"https://api.mailgun.net/v3/{domain}/messages",
+                    auth = ("api", mailgun_key),
+                            data = {"from": f"{random.choice(names)} <{random.choice(bots) + '@' + domain}>",
+                                    "to": target,
+                                    "subject": subject,
+                                    "text": content})
+
                     if response.status_code == 200:
                         successed_count += len(target)
+                        spam += 1
                     
                     if response.status_code == 403:
-                        if idx == len(domains):
-                            return 403
-                        idx += 1
-                    spam += 1
+                        domain = random.choice(domains)
                     time.sleep(time_sleep)
                 
                # Update request_remaining 
