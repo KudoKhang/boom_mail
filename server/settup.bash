@@ -57,3 +57,11 @@ sudo chown -R ubuntu /var/www/boomcheck
 
 #GIT
 git branch -D `git branch --merged | grep -v \* | xargs`
+
+# VPS
+sudo apt-get install tightvncserver
+
+sudo ufw enable
+sudo ufw allow 5901/tcp
+vncserver -kill :1
+vncserver
