@@ -81,9 +81,10 @@ def spam_via_server(token, targets, n_spam):
         cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
         request_remaining = cursor.fetchone()[0]
 
-        successed_count = 0
-        
         if n_spam * len(targets) <= request_remaining:
+            # Update request_remaining
+            new_request_remaining = request_remaining - n_spam * len(targets)
+            cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
 
             response = requests.post(f"http://103.176.113.202/api/spam_server?n_spam={n_spam}",
                                         headers = {'Content-Type': 'application/json'},
