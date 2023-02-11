@@ -50,10 +50,13 @@ with open("Configs/subjects.txt", "r") as f:
     subjects = [line.rstrip() for line in f]
 
 with open("Configs/contents.txt", "r") as f:
-    contents = f.read().split('---')
+    contents = f.read().split('---')[:-1]
 
 with open("Configs/names.txt", "r") as f:
     names = [line.rstrip() for line in f]
+
+with open("Configs/Bots_hotmail/50-hotmail.txt", "r") as f:
+    accounts = [line.rstrip() for line in f]
 
 if __name__ == "__main__":
     print(random.choice(contents) + " " + str(random.randint(100000, 999999)))

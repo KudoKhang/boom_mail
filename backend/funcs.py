@@ -3,6 +3,13 @@ import jwt
 
 import time
 
+from email.message import EmailMessage
+import smtplib
+import os
+from tqdm import tqdm
+
+import concurrent.futures
+
 import requests
 import random
 import sendgrid
@@ -105,6 +112,88 @@ def spam_mailgun(token, targets, n_spam):
     else:
         print(f"{bcolors.WARNING}Invalid Token")
         return 401
+
+def spam_bot(sender, password, recipient):
+    smtp = smtplib.SMTP("smtp-mail.outlook.com", port=587)
+    smtp.starttls()
+    email = EmailMessage()
+    email["From"] = f"{random.choice(names)} <{sender}>"
+    content = random.choice(contents).format(random.choice(names), str(random.randint(100000, 999999)))
+
+    try:
+        email["Subject"] = random.choice(subjects) + "#" + str(random.randint(1000, 100000))
+        email.set_content(content)
+        smtp.login(sender, password)
+        smtp.sendmail(sender, recipient, email.as_string())
+        print("Sent")
+    except Exception as err:
+        print(sender, password)
+        print(err)
+    smtp.quit()
+
+def spam_hotmail(token, targets, n_spam):
+    # Check request_remaining
+    decoded_token = validation_token(token)
+
+    if decoded_token:
+        email = decoded_token["email"]
+        cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
+        request_remaining = cursor.fetchone()[0]
+
+        successed_count = 0
+        
+        if n_spam * len(targets) <= request_remaining:
+            try:
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    while successed_count < n_spam:
+                        acc = random.choice(accounts).split('|')
+                        executor.submit(spam_bot, acc[0], acc[1], targets)
+                        successed_count +=1
+                    executor.shutdown(wait=True)
+                
+               # Update request_remaining 
+                new_request_remaining = request_remaining - successed_count
+                cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
+
+                print(f"{bcolors.OKBLUE}\nSuccessful sent {successed_count} email spam to {len(targets)} targets!")
+            
+            except Exception as err:
+                print(err)
+            return 200
+        else:
+            print(f"{bcolors.WARNING}Not enough resquest!")
+            return 403
+    else:
+        print(f"{bcolors.WARNING}Invalid Token")
+        return 401
+
+def spam_via_server(token, targets, n_spam):
+    # Check request_remaining
+    decoded_token = validation_token(token)
+
+    if decoded_token:
+        email = decoded_token["email"]
+        cursor.execute("SELECT request_remaining FROM users WHERE email = %s", [email])
+        request_remaining = cursor.fetchone()[0]
+
+        successed_count = 0
+        
+        if n_spam * len(targets) <= request_remaining:
+
+            response = requests.post(f"http://103.176.113.202/api/spam_server?n_spam={n_spam}",
+                                        headers = {'Content-Type': 'application/json'},
+                                        json=targets)
+                                        
+            if response.status_code == 403:
+                print('Sent successeful!')
+        else:
+            print(f"{bcolors.WARNING}Not enough resquest!")
+            return 403
+    else:
+        print(f"{bcolors.WARNING}Invalid Token")
+        return 401
+
+
 
 def admin_edit_user(token, email_user, properties, value):
     decoded_token = validation_token(token)
