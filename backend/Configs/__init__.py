@@ -6,8 +6,9 @@ secret_key = "devbyk"
 sendgrid_key = "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"
 mailgun_key = "7c69ed36c0114dbe0e5d65618b5080ae-c2efc90c-46c9d97a"
 time_sleep = 0
-time_token_available = 60 * 30
-
+time_token_available = 60 * 60 * 24
+ip_smtp_server = "103.30.11.111"
+    
 package = {
     "normal": [1000, 2],
     "vip"   : [12000, 20],

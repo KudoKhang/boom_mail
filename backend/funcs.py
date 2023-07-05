@@ -86,7 +86,7 @@ def spam_via_server(token, targets, n_spam):
             new_request_remaining = request_remaining - n_spam * len(targets)
             cursor.execute("UPDATE users set request_remaining = %s where email = %s", [new_request_remaining, email])
 
-            response = requests.post(f"http://42.96.2.172/api/spam_server?n_spam={n_spam}",
+            response = requests.post(f"http://{ip_smtp_server}/api/spam_server?n_spam={n_spam}",
                                         headers = {'Content-Type': 'application/json'},
                                         json=targets)
                                         
